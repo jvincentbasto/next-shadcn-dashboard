@@ -5,6 +5,9 @@
   "scripts": {
     "predev": "rm -fr .next",
     "dev": "next dev",
+    "custom": "next dev -p 5000 & sleep 5 && google-chrome http://localhost:5000 &",
+    "stop-custom": "pkill -f 'next dev -p 5000'",
+    "restart-custom": "npm run stop-custom; npm run custom",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
