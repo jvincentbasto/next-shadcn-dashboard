@@ -1,19 +1,18 @@
 import { ReactNode } from 'react'
 import MainSidebar from './sidebars/main-sidebar'
 import MainNavbar from './navbars/main-navbar'
-import {
-  AppLayoutType,
-  RootPublicLayoutType,
-  RootPublicNavLinkType
-} from '@/lib/constants/global'
 import { Home, LineChart, Package, ShoppingCart, Users2 } from 'lucide-react'
 import { appConfig } from '@/app/config/app-config'
-import { getAppConfigLayoutControl } from '@/lib/utilities/global'
+import {
+  EnumValueNavigation,
+  TypeNavigation
+} from '@/lib/constants/navigations'
+import utilityNavigations from '@/lib/utilities/navigations'
 
 //
 type WidgetProps = {
   readonly children: ReactNode
-  readonly links?: RootPublicNavLinkType[]
+  readonly links?: TypeNavigation['AppNavigationWidgetLinkItem'][]
 }
 
 //
@@ -51,10 +50,10 @@ export default function RootPublicLayout({
   children,
   links = defaultLinks
 }: WidgetProps) {
-  const layout = appConfig.appLayouts.publicLayouts.layout
+  const mode = appConfig.navigations.public.mode
 
   //
-  if (layout === RootPublicLayoutType.type2) {
+  if (mode === EnumValueNavigation.AppNavigationMode.type2) {
     return (
       <RootPublicLayoutType2 links={links}>{children}</RootPublicLayoutType2>
     )
@@ -66,7 +65,9 @@ export default function RootPublicLayout({
 
 //
 const RootPublicLayoutType1 = ({ children, links }: WidgetProps) => {
-  const control = getAppConfigLayoutControl(AppLayoutType.public)
+  const control = utilityNavigations.getters.getAppNavigationControlComponents({
+    mode: EnumValueNavigation.AppNavigation.public
+  })
 
   //
   return (
@@ -82,7 +83,9 @@ const RootPublicLayoutType1 = ({ children, links }: WidgetProps) => {
 
 //
 const RootPublicLayoutType2 = ({ children, links }: WidgetProps) => {
-  const control = getAppConfigLayoutControl(AppLayoutType.public)
+  const control = utilityNavigations.getters.getAppNavigationControlComponents({
+    mode: EnumValueNavigation.AppNavigation.public
+  })
 
   //
   return (

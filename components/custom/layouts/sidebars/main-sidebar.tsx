@@ -6,20 +6,24 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import { AppLayoutType, RootPublicNavLinkType } from '@/lib/constants/global'
-import { getAppConfigLayoutLogos } from '@/lib/utilities/global'
-import { appConfig } from '@/app/config/app-config'
+import {
+  EnumValueNavigation,
+  TypeNavigation
+} from '@/lib/constants/navigations'
+import utilityNavigations from '@/lib/utilities/navigations'
 
 //
 type WidgetProps = {
-  readonly links?: RootPublicNavLinkType[]
+  readonly links?: TypeNavigation['AppNavigationWidgetLinkItem'][]
 }
 
 //
 export default function MainSidebar({ links = [] }: WidgetProps) {
   //
-  const showLogo = getAppConfigLayoutLogos(AppLayoutType.public)
-  const logo = showLogo.sidebar ? (
+  const logoItem = utilityNavigations.getters.getAppNavigationLogos(
+    EnumValueNavigation.AppNavigation.public
+  )
+  const logo = logoItem.sidebar ? (
     <ul className='flex flex-col items-center gap-4 px-2 sm:pt-5'>
       <li>
         <Link
@@ -89,5 +93,11 @@ export default function MainSidebar({ links = [] }: WidgetProps) {
       {mainList}
       {bottomList}
     </aside>
+  )
+}
+
+export const MainSidebarPlaceholder = () => {
+  return (
+    <div className='hidden min-h-screen w-14 flex-col border-r bg-background sm:flex' />
   )
 }

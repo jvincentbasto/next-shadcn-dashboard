@@ -1,46 +1,46 @@
-import { appConfig } from '@/app/config/app-config'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { UserNav } from '@/components/user-nav'
 import {
-  AppLayoutType,
-  RootPublicLayoutType,
-  RootPublicNavLinkType
-} from '@/lib/constants/global'
+  EnumValueNavigation,
+  TypeNavigation
+} from '@/lib/constants/navigations'
 import {
-  getAppConfigLayoutLogos,
-  setValueByLayoutType
-} from '@/lib/utilities/global'
+  utilityNavigationGetters,
+  utilityNavigationSetters
+} from '@/lib/utilities/navigations'
 import { Package2 } from 'lucide-react'
 import Link from 'next/link'
 
 //
 type WidgetProps = {
-  readonly links?: RootPublicNavLinkType[]
+  readonly links?: TypeNavigation['AppNavigationWidgetLinkItem'][]
 }
 
 //
 export default function MainNavbar({ links = [] }: WidgetProps) {
   //
-  const logoUlLayout = setValueByLayoutType({
+  const logoUlLayout = utilityNavigationSetters.setByAppNavigationMode({
     value: {
-      layout: RootPublicLayoutType.type2,
+      mode: EnumValueNavigation.AppNavigationMode.type2,
       value: 'px-[3px]'
     },
     defaultValue: ''
   })
 
   //
-  const navLayout = setValueByLayoutType({
+  const navLayout = utilityNavigationSetters.setByAppNavigationMode({
     value: {
-      layout: RootPublicLayoutType.type2,
+      mode: EnumValueNavigation.AppNavigationMode.type2,
       value: 'px-6 pl-2'
     },
     defaultValue: 'px-6'
   })
 
   //
-  const showLogo = getAppConfigLayoutLogos(AppLayoutType.public)
-  const logo = showLogo.navbar ? (
+  const logoItem = utilityNavigationGetters.getAppNavigationLogos(
+    EnumValueNavigation.AppNavigation.public
+  )
+  const logo = logoItem.navbar ? (
     <ul className={`flex flex-col items-center gap-4 sm:pt-5 ${logoUlLayout}`}>
       <li>
         <Link

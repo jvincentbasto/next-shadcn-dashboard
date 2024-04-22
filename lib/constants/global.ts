@@ -1,38 +1,26 @@
-// * ########## App Types ##########
-export enum AppLayoutType {
-  public = 'public',
-  private = 'private'
-}
+import navigationConstants from './navigations'
+import styleConstants from './styles'
 
 //
-export type AppLayoutLogoType = {
-  type: RootPublicLayoutType | RootPrivateLayoutType
-  navbar: boolean
-  sidebar: boolean
-}
-
-// * ########## Root Public Types ##########
-export enum RootPublicLayoutType {
-  type1 = 1,
-  type2
-}
+// ##############################
+// * ########## Constants
+// ##############################
+//
 
 //
-export type RootPublicNavLinkType = {
-  icon?: JSX.Element
-  label: string
-  href: string
+export const globalConstants = {
+  styleConstants,
+  navigationConstants
 }
-
-// * ########## Root Private Types ##########
-export enum RootPrivateLayoutType {
-  type1 = 1,
-  type2
-}
+export default globalConstants
 
 //
-export type RootPrivateNavLinkType = {
-  icon?: JSX.Element
-  label: string
-  href: string
+// ##############################
+// * ########## Types
+// ##############################
+//
+
+export type TypeGlobal = {
+  TypeStyles: typeof styleConstants
+  TypeNavigations: typeof navigationConstants
 }
