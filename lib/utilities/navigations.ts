@@ -1,9 +1,5 @@
-import { appConfig } from '@/app/config/app-config'
-import {
-  EnumNavigation,
-  EnumValueNavigation,
-  TypeNavigation
-} from './../constants/navigations'
+import { appNavigation, appNavigationMode } from './../constants/navigations'
+import { appConfig } from '@/config/app-config'
 import utilityTypes from './types'
 
 //
@@ -13,21 +9,20 @@ import utilityTypes from './types'
 //
 
 // * #####
-type getAppNavigationPropValueProps = {
-  mode?: EnumNavigation['AppNavigation']
-}
-type getAppNavigationPropValueFunction = (
-  args?: getAppNavigationPropValueProps
+type getAppNavigationPropValueType = (
+  args?: ObjectValues<typeof appNavigation>
 ) => typeof appConfig.navigations.public | typeof appConfig.navigations.private
 
 //
-export const getAppNavigationPropValue: getAppNavigationPropValueFunction = ({
-  mode = EnumValueNavigation.AppNavigation.public
-} = {}) => {
-  let value = appConfig.navigations.public
+export const getAppNavigationPropValue: getAppNavigationPropValueType = (
+  mode = appNavigation.public
+) => {
+  let value:
+    | typeof appConfig.navigations.public
+    | typeof appConfig.navigations.private = appConfig.navigations.public
 
   //
-  if (mode === EnumValueNavigation.AppNavigation.private) {
+  if (mode === appNavigation.private) {
     value = appConfig.navigations.private
   }
 
@@ -36,24 +31,21 @@ export const getAppNavigationPropValue: getAppNavigationPropValueFunction = ({
 }
 
 // * #####
-type getAppNavigationLogosProps = EnumNavigation['AppNavigation']
-type getAppNavigationLogosFunction = (
-  args: getAppNavigationLogosProps
-) => TypeNavigation['AppNavigationComponentLogo']
+type getAppNavigationLogosType = (
+  args: ObjectValues<typeof appNavigation>
+) =>
+  | (typeof appConfig.navigations.public.values.components.logos)[0]
+  | (typeof appConfig.navigations.private.values.components.logos)[0]
 
 //
-export const getAppNavigationLogos: getAppNavigationLogosFunction = (
-  mode = EnumValueNavigation.AppNavigation.public
+export const getAppNavigationLogos: getAppNavigationLogosType = (
+  mode = appNavigation.public
 ) => {
-  let value = {
-    type: appConfig.navigations.public.mode,
-    navbar: true,
-    sidebar: true
-  }
+  let value = appConfig.navigations.public.values.components.logos[0]
 
   //
   const publicMode = getAppNavigationPropValue()
-  if (mode === EnumValueNavigation.AppNavigation.public) {
+  if (mode === appNavigation.public) {
     const match = publicMode.values.components.logos.filter(
       d => d.type === publicMode.mode
     )
@@ -63,9 +55,9 @@ export const getAppNavigationLogos: getAppNavigationLogosFunction = (
   }
 
   //
-  const privateMode = getAppNavigationPropValue({ mode })
+  const privateMode = getAppNavigationPropValue(mode)
   const privateLayout = appConfig.navigations.private
-  if (mode === EnumValueNavigation.AppNavigation.private) {
+  if (mode === appNavigation.private) {
     const match = privateMode.values.components.logos.filter(
       d => d.type === privateLayout.mode
     )
@@ -78,22 +70,21 @@ export const getAppNavigationLogos: getAppNavigationLogosFunction = (
 }
 
 // * #####
-type getAppNavigationControlProps = {
-  mode?: EnumNavigation['AppNavigation']
-}
-type getAppNavigationControlFunction = (
-  args?: getAppNavigationControlProps
-) => TypeNavigation['AppNavigationControl']
+type getAppNavigationControlType = (
+  args?: ObjectValues<typeof appNavigation>
+) =>
+  | typeof appConfig.navigations.public.control
+  | typeof appConfig.navigations.private.control
 
 //
-export const getAppNavigationControl: getAppNavigationControlFunction = ({
-  mode = EnumValueNavigation.AppNavigation.public
-} = {}) => {
+export const getAppNavigationControl: getAppNavigationControlType = (
+  mode = appNavigation.public
+) => {
   let value = appConfig.navigations.public.control
 
   //
-  const privateMode = getAppNavigationPropValue({ mode })
-  if (mode === EnumValueNavigation.AppNavigation.private) {
+  const privateMode = getAppNavigationPropValue(mode)
+  if (mode === appNavigation.private) {
     value = privateMode.control
   }
 
@@ -101,32 +92,30 @@ export const getAppNavigationControl: getAppNavigationControlFunction = ({
 }
 
 // * #####
-type getAppNavigationControlComponentsProps = {
-  mode?: EnumNavigation['AppNavigation']
-}
 type getAppNavigationControlComponentsFunction = (
-  args?: getAppNavigationControlComponentsProps
-) => TypeNavigation['AppNavigationControlComponents']
+  args?: ObjectValues<typeof appNavigation>
+) =>
+  | typeof appConfig.navigations.public.control.components
+  | typeof appConfig.navigations.private.control.components
 
 //
 export const getAppNavigationControlComponents: getAppNavigationControlComponentsFunction =
-  ({ mode = EnumValueNavigation.AppNavigation.public } = {}) => {
-    let value = getAppNavigationControl({ mode }).components
+  (mode = appNavigation.public) => {
+    let value = getAppNavigationControl(mode).components
     return value
   }
 
 // * #####
-type getAppNavigationControlStylesProps = {
-  mode?: EnumNavigation['AppNavigation']
-}
 type getAppNavigationControlStylesFunction = (
-  args?: getAppNavigationControlStylesProps
-) => TypeNavigation['AppNavigationControlStyles']
+  args?: ObjectValues<typeof appNavigation>
+) =>
+  | typeof appConfig.navigations.public.control.styles
+  | typeof appConfig.navigations.private.control.styles
 
 //
 export const getAppNavigationControlStyles: getAppNavigationControlStylesFunction =
-  ({ mode = EnumValueNavigation.AppNavigation.public } = {}) => {
-    let value = getAppNavigationControl({ mode }).styles
+  (mode = appNavigation.public) => {
+    let value = getAppNavigationControl(mode).styles
     return value
   }
 
@@ -147,11 +136,11 @@ export const utilityNavigationGetters = {
 
 // * #####
 type setByAppNavigationModeValue<T> = {
-  mode: EnumNavigation['AppNavigationMode']
+  mode: ObjectValues<typeof appNavigationMode>
   value: T
 }
 type setByAppNavigationModeProps<T> = {
-  mode?: EnumNavigation['AppNavigationMode']
+  mode?: ObjectValues<typeof appNavigationMode>
   value: setByAppNavigationModeValue<T>
   values?: setByAppNavigationModeValue<T>[]
   defaultValue: T
@@ -170,8 +159,7 @@ export const setByAppNavigationMode: setByAppNavigationModeFunction = ({
   let newValue = defaultValue
 
   if (!utilityTypes.setters.nullCheck(mode)) {
-    const type2 = [EnumValueNavigation.AppNavigationMode.type2]
-    if (type2.includes(mode)) {
+    if (appNavigationMode.type2 === mode) {
       newValue = value.value
     }
 

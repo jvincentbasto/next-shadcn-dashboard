@@ -7,21 +7,21 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import {
-  EnumValueNavigation,
-  TypeNavigation
+  AppNavigationWidgetLinkItem,
+  appNavigation
 } from '@/lib/constants/navigations'
 import utilityNavigations from '@/lib/utilities/navigations'
 
 //
 type WidgetProps = {
-  readonly links?: TypeNavigation['AppNavigationWidgetLinkItem'][]
+  readonly links?: AppNavigationWidgetLinkItem[]
 }
 
 //
 export default function MainSidebar({ links = [] }: WidgetProps) {
   //
   const logoItem = utilityNavigations.getters.getAppNavigationLogos(
-    EnumValueNavigation.AppNavigation.public
+    appNavigation.public
   )
   const logo = logoItem.sidebar ? (
     <ul className='flex flex-col items-center gap-4 px-2 sm:pt-5'>

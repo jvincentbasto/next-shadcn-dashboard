@@ -1,8 +1,9 @@
 import { ThemeToggle } from '@/components/theme-toggle'
 import { UserNav } from '@/components/user-nav'
 import {
-  EnumValueNavigation,
-  TypeNavigation
+  AppNavigationWidgetLinkItem,
+  appNavigation,
+  appNavigationMode
 } from '@/lib/constants/navigations'
 import {
   utilityNavigationGetters,
@@ -13,7 +14,7 @@ import Link from 'next/link'
 
 //
 type WidgetProps = {
-  readonly links?: TypeNavigation['AppNavigationWidgetLinkItem'][]
+  readonly links?: AppNavigationWidgetLinkItem[]
 }
 
 //
@@ -21,7 +22,7 @@ export default function MainNavbar({ links = [] }: WidgetProps) {
   //
   const logoUlLayout = utilityNavigationSetters.setByAppNavigationMode({
     value: {
-      mode: EnumValueNavigation.AppNavigationMode.type2,
+      mode: appNavigationMode.type2,
       value: 'px-[3px]'
     },
     defaultValue: ''
@@ -30,7 +31,7 @@ export default function MainNavbar({ links = [] }: WidgetProps) {
   //
   const navLayout = utilityNavigationSetters.setByAppNavigationMode({
     value: {
-      mode: EnumValueNavigation.AppNavigationMode.type2,
+      mode: appNavigationMode.type2,
       value: 'px-6 pl-2'
     },
     defaultValue: 'px-6'
@@ -38,7 +39,7 @@ export default function MainNavbar({ links = [] }: WidgetProps) {
 
   //
   const logoItem = utilityNavigationGetters.getAppNavigationLogos(
-    EnumValueNavigation.AppNavigation.public
+    appNavigation.public
   )
   const logo = logoItem.navbar ? (
     <ul className={`flex flex-col items-center gap-4 sm:pt-5 ${logoUlLayout}`}>

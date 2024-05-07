@@ -2,17 +2,19 @@ import { ReactNode } from 'react'
 import MainSidebar from './sidebars/main-sidebar'
 import MainNavbar from './navbars/main-navbar'
 import { Home, LineChart, Package, ShoppingCart, Users2 } from 'lucide-react'
-import { appConfig } from '@/app/config/app-config'
+import { appConfig } from '@/config/app-config'
 import {
-  EnumValueNavigation,
-  TypeNavigation
+  AppNavigationWidgetLinkItem,
+  appNavigation,
+  appNavigationMode
 } from '@/lib/constants/navigations'
 import utilityNavigations from '@/lib/utilities/navigations'
 
 //
 type WidgetProps = {
   readonly children: ReactNode
-  readonly links?: TypeNavigation['AppNavigationWidgetLinkItem'][]
+  readonly links?: AppNavigationWidgetLinkItem[]
+  readonly mode?: ObjectValues<typeof appNavigationMode>
 }
 
 //
@@ -48,12 +50,11 @@ const defaultLinks = [
 //
 export default function RootPublicLayout({
   children,
-  links = defaultLinks
+  links = defaultLinks,
+  mode = appConfig.navigations.public.mode
 }: WidgetProps) {
-  const mode = appConfig.navigations.public.mode
-
   //
-  if (mode === EnumValueNavigation.AppNavigationMode.type2) {
+  if (mode === appNavigationMode.type2) {
     return (
       <RootPublicLayoutType2 links={links}>{children}</RootPublicLayoutType2>
     )
@@ -65,9 +66,9 @@ export default function RootPublicLayout({
 
 //
 const RootPublicLayoutType1 = ({ children, links }: WidgetProps) => {
-  const control = utilityNavigations.getters.getAppNavigationControlComponents({
-    mode: EnumValueNavigation.AppNavigation.public
-  })
+  const control = utilityNavigations.getters.getAppNavigationControlComponents(
+    appNavigation.public
+  )
 
   //
   return (
@@ -83,9 +84,9 @@ const RootPublicLayoutType1 = ({ children, links }: WidgetProps) => {
 
 //
 const RootPublicLayoutType2 = ({ children, links }: WidgetProps) => {
-  const control = utilityNavigations.getters.getAppNavigationControlComponents({
-    mode: EnumValueNavigation.AppNavigation.public
-  })
+  const control = utilityNavigations.getters.getAppNavigationControlComponents(
+    appNavigation.public
+  )
 
   //
   return (
