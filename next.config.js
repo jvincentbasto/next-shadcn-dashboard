@@ -5,6 +5,14 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'static.wikia.nocookie.net'
+      },
+      {
+        protocol: 'https',
+        hostname: 'cloudflare-ipfs.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com'
       }
     ]
   }

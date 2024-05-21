@@ -8,7 +8,7 @@ export const publicAppNavigations = {
     components: {
       all: true,
       navbar: true,
-      sidebar: true,
+      sidebar: false,
       logos: true
     },
     styles: {

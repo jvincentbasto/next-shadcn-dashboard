@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import MainSidebar from './sidebars/main-sidebar'
 import MainNavbar from './navbars/main-navbar'
 import { Home, LineChart, Package, ShoppingCart, Users2 } from 'lucide-react'
-import { appConfig } from '@/config/app-config'
+import { appConfig } from '@/config/config'
 import {
   AppNavigationWidgetLinkItem,
   appNavigation,
@@ -72,11 +72,11 @@ const RootPublicLayoutType1 = ({ children, links }: WidgetProps) => {
 
   //
   return (
-    <div className='flex min-h-screen w-full bg-muted/40'>
+    <div className='flex min-h-screen w-full overflow-hidden bg-muted/40'>
       {control.sidebar ? <MainSidebar links={links} /> : null}
-      <div className='flex h-full w-full flex-col'>
+      <div className='flex min-h-screen w-full flex-col'>
         {control.navbar ? <MainNavbar links={links} /> : null}
-        <main>{children}</main>
+        <main className='min-h-screen w-full'>{children}</main>
       </div>
     </div>
   )
@@ -90,11 +90,11 @@ const RootPublicLayoutType2 = ({ children, links }: WidgetProps) => {
 
   //
   return (
-    <div className='min-h-screen w-full bg-muted/40'>
+    <div className='min-h-screen w-full overflow-hidden bg-muted/40'>
       {control.navbar ? <MainNavbar links={links} /> : null}
-      <div className='flex h-full w-full'>
+      <div className='flex min-h-screen w-full'>
         {control.sidebar ? <MainSidebar links={links} /> : null}
-        <main className='w-full'>{children}</main>
+        <main className='min-h-screen w-full'>{children}</main>
       </div>
     </div>
   )

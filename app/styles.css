@@ -1,0 +1,29 @@
+table,
+thead,
+tbody,
+tfoot {
+  display: block;
+}
+
+thead,
+tbody,
+tfoot {
+  min-width: max-content;
+}
+
+tr {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 50px;
+  min-height: 50px;
+}
+
+th,
+td {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  min-width: 50px;
+}

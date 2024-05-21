@@ -1,5 +1,5 @@
 import { appNavigation, appNavigationMode } from './../constants/navigations'
-import { appConfig } from '@/config/app-config'
+import { appConfig } from '@/config/config'
 import utilityTypes from './types'
 
 //
