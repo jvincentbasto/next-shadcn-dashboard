@@ -138,3 +138,6 @@ type inferTypeBooleanArray = InferType<typeof unconstObj.obj.sampleBooleanArray>
 type inferTypeTuple = InferType<typeof unconstObj.obj.sampleTuple>
 type inferTypeFunction = InferType<typeof unconstObj.obj.sampleFunction>
 type inferTypeObject = InferType<typeof unconstObj>
+
+//
+type GenerateObjectType<T> = { [key: string]: T | undefined }

@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { faker } from '@faker-js/faker'
 import { ColumnDef } from '@tanstack/react-table'
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react'
+import { MoreHorizontal } from 'lucide-react'
 import Image from 'next/image'
 
 export type Person = {
@@ -69,15 +69,7 @@ export const personColumns: ColumnDef<Person>[] = [
   {
     accessorKey: 'firstName',
     id: 'firstName',
-    header: ({ column }) => (
-      <Button
-        variant='ghost'
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        First Name
-        <ArrowUpDown className='ml-2 h-4 w-4' />
-      </Button>
-    ),
+    header: 'First Name',
     minSize: 300,
     maxSize: 500
   },

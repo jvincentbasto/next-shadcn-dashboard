@@ -1,7 +1,6 @@
 'use client'
 
 import { File, ListFilter, PlusCircle } from 'lucide-react'
-
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -18,6 +17,7 @@ import {
   personData
 } from '@/components/custom/tables/samples/person'
 import { useEffect, useState } from 'react'
+import { includeCustomColumnTools } from '@/components/custom/tables/components/tools/column/column'
 
 export default function HomePage() {
   const [isClient, setIsClient] = useState(false)
@@ -77,7 +77,10 @@ export default function HomePage() {
           </div>
         </div>
         <TabsContent value='all' className='w-full'>
-          <CustomTable columns={personColumns} data={personData} />
+          <CustomTable
+            columns={includeCustomColumnTools(personColumns)}
+            data={personData}
+          />
         </TabsContent>
       </Tabs>
     </div>
