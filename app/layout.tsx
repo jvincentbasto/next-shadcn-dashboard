@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 import './styles.css'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${inter.className} min-h-screen w-screen`}>
         <ThemeProvider
           enableSystem
           attribute='class'
@@ -26,7 +27,10 @@ export default function RootLayout({
           disableTransitionOnChange
           themes={['light', 'dark', 'orange']}
         >
-          {children}
+          <ScrollArea className='h-screen w-screen overflow-y-auto'>
+            {children}
+            <ScrollBar orientation='horizontal' />
+          </ScrollArea>
         </ThemeProvider>
       </body>
     </html>

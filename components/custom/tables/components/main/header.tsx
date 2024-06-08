@@ -1,10 +1,14 @@
 import { TableHeader, TableRow } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
-import { customColumnBoxShadow } from '../layout/box-shadow'
+import {
+  customColumnBoxShadow,
+  getTableHeaderBoxShadowClassNames
+} from '../layout/box-shadow'
 import { ColumnPinningPosition, Header, Table } from '@tanstack/react-table'
 import { customTableHead } from '../parts/cells'
 import { getColumnPositions } from '../utilities/column'
 import { hasStringMatch } from '@/lib/utilities/string'
+import { getTableHeaderPositionClassNames } from '../utilities/row'
 
 //
 export const setCustomHeaderGroup = <TData,>(
@@ -52,14 +56,17 @@ export const customTableHeaderColumn = <T,>(
       }
 
       return (
-        <TableRow key={headerGroup.id} className='border-0'>
+        <div
+          key={headerGroup.id}
+          className='flex h-full items-center justify-start border-0'
+        >
           {setCustomHeaderGroup(headers)}
-        </TableRow>
+        </div>
       )
     })
 
   //
-  return customColumnBoxShadow(position, list)
+  return customColumnBoxShadow(position, list, true)
 }
 
 //
@@ -67,10 +74,19 @@ export const customTableHeader = <T,>(
   table: Table<T>,
   className: string = ''
 ) => {
+  const headerPositions = getTableHeaderPositionClassNames()
+  const headerBoxShadow = getTableHeaderBoxShadowClassNames()
+  const background = 'bg-gray-50'
+
   //
   return (
-    <TableHeader className={cn('', className)}>
-      <TableRow className='border-0'>
+    <TableHeader
+      className={cn(
+        `${background} ${headerPositions} ${headerBoxShadow}`,
+        className
+      )}
+    >
+      <TableRow className={`border-0 hover:${background}`}>
         {customTableHeaderColumn(table, 'left')}
         {customTableHeaderColumn(table)}
         {customTableHeaderColumn(table, 'right')}

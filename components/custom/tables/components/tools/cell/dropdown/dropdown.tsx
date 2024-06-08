@@ -17,6 +17,8 @@ import { customDropdownSort, enableDropdownSort } from './sort'
 import { customDropdownPin, enableDropdownPin } from './pin'
 import { customCellSort, enableCellSort } from '../sort'
 import { hasStringMatch } from '@/lib/utilities/string'
+import { columnToolId } from '../../column/column'
+import { dropdownZIndex } from '../../../utilities/global'
 
 //
 export const rowToolId = 'rowTools'
@@ -39,7 +41,8 @@ export const defaultDropdownOptions = {
 //
 export const customDropdownMenuItem = <T,>(data: T) => {
   //
-  const { cb, icon, title, shortcut, selected } = {
+  const { key, cb, icon, title, shortcut, selected } = {
+    key: '',
     cb: () => {},
     icon: null as unknown as (
       className?: string,
@@ -54,12 +57,13 @@ export const customDropdownMenuItem = <T,>(data: T) => {
   //
   return (
     <DropdownMenuItem
+      key={key}
       onClick={cb}
       className='flex items-center justify-between'
     >
       <div className='flex items-center'>
         {icon ? icon('mr h-4 w-4') : null}
-        {title ? <span>{title}</span> : null}
+        {title ? <span className='ml-2'>{title}</span> : null}
       </div>
       <div className='flex items-center'>
         {shortcut ? (
@@ -96,10 +100,14 @@ export const CustomCellDropdown = <T,>({
 
   //
   const isMatchRowToolId = hasStringMatch(column.id, rowToolId)
-  const isEnableCellSort = cellSort && !isMatchRowToolId
+  const isMatchColumnToolId = hasStringMatch(column.id, columnToolId)
 
   //
-  const isEnableDropdownSearch = search && !isMatchRowToolId
+  const isEnableCellSort = cellSort && !isMatchColumnToolId
+
+  //
+  const isEnableDropdownSearch =
+    search && !isMatchRowToolId && !isMatchColumnToolId
   const isEnableDropdownSort = dropdownSort && !isMatchRowToolId
   const isEnableDropdownPin = pin && !isMatchRowToolId
 
@@ -113,8 +121,12 @@ export const CustomCellDropdown = <T,>({
   )
 
   //
+  const dropdownPadding = isEnableDropdownSearch ? '' : 'p-2'
   const customDropdownMenu = (
-    <DropdownMenuContent align='end'>
+    <DropdownMenuContent
+      align='end'
+      className={`relative z-[${dropdownZIndex}] ${dropdownPadding}`}
+    >
       {isEnableDropdownSearch ? (
         <>
           <DropdownMenuLabel>{customDropdownSearch(column)}</DropdownMenuLabel>
@@ -131,7 +143,7 @@ export const CustomCellDropdown = <T,>({
 
   //
   return (
-    <div className='flex items-center'>
+    <div className='flex items-center pr-1'>
       {isEnableCellSort ? customCellSort(column) : null}
       {enable ? (
         <DropdownMenu>

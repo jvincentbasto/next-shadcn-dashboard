@@ -23,6 +23,7 @@ import {
 import { customTableFooter } from './components/main/footer'
 import { customTableHeader } from './components/main/header'
 import { customTableBody } from './components/main/body'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 //
 type CustomTableProps<TData, TValue> = {
@@ -81,15 +82,17 @@ const CustomTable = <TData, TValue>({
   //
   const totalTableSize = getComputedTotalColumnWidth(table.getAllColumns())
   const customTable = (
-    <Table
-      className={cn('h-full border-separate border-spacing-0', '')}
-      classNameWrapper={cn('overflow-auto h-80 w-full relative', '')}
-      style={{ width: `${totalTableSize}px` }}
-    >
-      {customTableHeader(table)}
-      {customTableBody(table, columns)}
-      {customTableFooter()}
-    </Table>
+    <ScrollArea className='relative h-80 w-full overflow-auto rounded-md border'>
+      <Table
+        className={cn('relative h-full border-separate border-spacing-0', '')}
+        style={{ width: `${totalTableSize}px` }}
+      >
+        {customTableHeader(table)}
+        {customTableBody(table, columns)}
+        {customTableFooter()}
+      </Table>
+      <ScrollBar orientation='horizontal' />
+    </ScrollArea>
   )
 
   //

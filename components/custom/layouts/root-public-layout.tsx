@@ -72,7 +72,7 @@ const RootPublicLayoutType1 = ({ children, links }: WidgetProps) => {
 
   //
   return (
-    <div className='flex min-h-screen w-full overflow-hidden bg-muted/40'>
+    <div className='flex min-h-screen w-screen min-w-[325px] overflow-hidden bg-muted/40'>
       {control.sidebar ? <MainSidebar links={links} /> : null}
       <div className='flex min-h-screen w-full flex-col'>
         {control.navbar ? <MainNavbar links={links} /> : null}
@@ -90,7 +90,7 @@ const RootPublicLayoutType2 = ({ children, links }: WidgetProps) => {
 
   //
   return (
-    <div className='min-h-screen w-full overflow-hidden bg-muted/40'>
+    <div className='min-h-screen w-screen min-w-[325px] overflow-hidden bg-muted/40'>
       {control.navbar ? <MainNavbar links={links} /> : null}
       <div className='flex min-h-screen w-full'>
         {control.sidebar ? <MainSidebar links={links} /> : null}

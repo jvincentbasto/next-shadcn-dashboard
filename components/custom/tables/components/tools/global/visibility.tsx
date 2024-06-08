@@ -6,6 +6,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Table } from '@tanstack/react-table'
+import { dropdownZIndex } from '../../utilities/global'
 
 //
 export const enableTableVisibility = true
@@ -24,7 +25,7 @@ export const customTableVisibility = <T,>(table: Table<T>) => {
           Columns
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end'>
+      <DropdownMenuContent align='end' className={`z-[${dropdownZIndex}]`}>
         {filteredColumns.map(column => {
           return (
             <DropdownMenuCheckboxItem

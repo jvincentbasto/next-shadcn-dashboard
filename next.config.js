@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  publicRuntimeConfig: {
+    environment: process.env.CUSTOM_ENV || 'production'
+  },
   images: {
     remotePatterns: [
       {

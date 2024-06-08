@@ -16,3 +16,18 @@ export const getRowPositions: (isPinned: RowPinningPosition) => {
 
   return { isTop, isBottom, isCenter }
 }
+
+//
+export const getTableHeaderPositionStyles = () => {
+  return {
+    position: 'sticky',
+    top: '0',
+    zIndex: '1000'
+  }
+}
+
+//
+export const getTableHeaderPositionClassNames = () => {
+  const stickyHeader = 'sticky top-0 z-[1000] shadow-lg'
+  return stickyHeader
+}

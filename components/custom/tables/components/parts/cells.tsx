@@ -47,7 +47,6 @@ export const customTableCellFormat = <T,>(
 
   //
   const layout = 'h-full w-full flex items-center'
-  const paddingRight = separatorWidth
 
   //
   let paddingLeft = isLeft || isCenter ? '25px' : undefined
@@ -63,12 +62,12 @@ export const customTableCellFormat = <T,>(
   //
   return (
     <div
-      className={`${layout} min-w-max overflow-hidden`}
-      style={{ ...containerStyles }}
+      className={`${layout} overflow-hidden`}
+      style={{ ...containerStyles, marginRight: separatorWidth }}
     >
       <div
-        className={`${layout} min-w-max justify-between whitespace-nowrap`}
-        style={{ paddingRight }}
+        className={`${layout} justify-between whitespace-nowrap`}
+        style={{ paddingRight: separatorWidth }}
       >
         {slot ?? null}
       </div>
@@ -99,7 +98,7 @@ export const customTableHead = <T,>(header: Header<T, unknown>) => {
     <TableHead
       key={header.id}
       colSpan={header.colSpan}
-      className={`relative h-full p-0 ${className}`}
+      className={`relative h-full bg-gray-50 p-0 text-gray-800 ${className}`}
       style={{
         ...tableCell.cell
       }}
@@ -121,7 +120,7 @@ export const customTableCell = <TData,>(cell: Cell<TData, unknown>) => {
   return (
     <TableCell
       key={cell.id}
-      className={`${className} p-0`}
+      className={`bg-white p-0 ${className}`}
       style={{
         ...tableCell.cell
       }}

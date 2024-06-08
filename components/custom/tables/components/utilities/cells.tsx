@@ -169,10 +169,6 @@ export const computeCellPositions = <TData,>(
     right = getComputedTotalColumnWidth(rightColumns, widths)
   }
 
-  if (isLeft) {
-    console.log('after', column.id, leftColumns, left)
-  }
-
   //
   return {
     left,
@@ -226,9 +222,9 @@ export const getCellStyles = <TData,>(
   const cellPaddingRight = getColumnSeparatorWidth(separator)
 
   // ####################
-  const background = isPinned ? 'white' : undefined
+  // const background = isPinned ? 'white' : undefined
   const position = isPinned ? 'sticky' : 'relative'
-  const zIndex = isPinned ? cellZIndex : 0
+  const zIndex = cellZIndex
 
   //
   const leftPosition = isLeft && left ? `${left}px` : undefined
@@ -242,7 +238,7 @@ export const getCellStyles = <TData,>(
   }
   const defaultPositions: CSSProperties = {
     //
-    background,
+    // background,
     position,
     zIndex,
     //
@@ -287,6 +283,7 @@ export const getCellZIndex = <TData,>(
 ) => {
   //
   const isPinned = column.getIsPinned()
+  const { isCenter } = getColumnPositions(isPinned)
   const index = column.getIndex(isPinned || 'center')
 
   // ####################
@@ -296,14 +293,23 @@ export const getCellZIndex = <TData,>(
   const rightHeaderGroups = table
     .getRightHeaderGroups()
     .map(group => group.headers)
+  const centerHeaderGroups = table
+    .getCenterHeaderGroups()
+    .map(group => group.headers)
 
   // ####################
   const leftColumns = leftHeaderGroups.flat().map(header => header.column)
   const rightColumns = rightHeaderGroups.flat().map(header => header.column)
+  const centerColumns = centerHeaderGroups.flat().map(header => header.column)
 
   //
   const leftZIndex = leftColumns.length - 1 - index
   const rightZIndex = rightColumns.length - 1 - index
+  const centerZIndex = centerColumns.length - 1 - index
+
+  if (isCenter) {
+    return centerZIndex
+  }
 
   //
   return isPinned === 'left' ? leftZIndex : rightZIndex
@@ -315,7 +321,7 @@ export const getCellZIndex = <TData,>(
 // ##############################
 //
 
-export const getTableHeaderStyles = <TData,>(
+export const getTableHeadStyles = <TData,>(
   header: Header<TData, unknown>,
   widths: TableColumnWidths = {},
   separator?: ColumnSeparatorType
@@ -390,7 +396,7 @@ export const getTableCellStyles = <TData,>(
     )
   }
 
-  return getTableHeaderStyles(
+  return getTableHeadStyles(
     document as Header<unknown, unknown>,
     widths,
     separator

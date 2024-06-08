@@ -27,18 +27,21 @@ export const getSortOptions = <T,>(column: Column<T, unknown>) => {
   //
   const options = [
     {
+      key: 'sort-reset',
       cb: sortResetCb,
       icon: (className: string) => <ListRestart className={className} />,
       title: 'Unsort',
       selected: unsorted
     },
     {
+      key: 'sort-ascend',
       cb: sortCb,
       icon: (className: string) => <ArrowUpNarrowWide className={className} />,
       title: 'Ascend',
       selected: isAsc
     },
     {
+      key: 'sort-descend',
       cb: sortCb,
       icon: (className: string) => (
         <ArrowDownWideNarrow className={className} />

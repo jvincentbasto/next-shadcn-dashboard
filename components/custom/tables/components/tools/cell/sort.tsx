@@ -14,7 +14,17 @@ export const enableCellSort = true
 export const customCellSort = <T,>(column: Column<T, unknown>) => {
   //
   const { isAsc, isDesc, unsorted } = getColumnSortOrder(column)
-  const sortCb = () => column.toggleSorting(column.getIsSorted() === 'asc')
+  const sortCb = () => {
+    const isAsc = column.getIsSorted() === 'asc'
+    const isDesc = column.getIsSorted() === 'desc'
+
+    if (isDesc) {
+      return column.clearSorting()
+    }
+
+    //
+    return column.toggleSorting(isAsc)
+  }
 
   //
   return (

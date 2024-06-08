@@ -56,7 +56,7 @@ export const customColumnTools = <T,>(
 export const includeCustomColumnTools = <T,>(
   columns: ColumnDef<T>[],
   start = true,
-  last = true
+  last = false
 ) => {
   const list = [...columns]
 

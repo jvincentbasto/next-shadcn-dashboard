@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import RootPublicLayout from '@/components/custom/layouts/root-public-layout'
 
-export default async function HomeLayout({
+export default function HomeLayout({
   children
 }: {
   readonly children: ReactNode

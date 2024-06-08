@@ -1,16 +1,7 @@
 'use client'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
 import { faker } from '@faker-js/faker'
 import { ColumnDef } from '@tanstack/react-table'
-import { MoreHorizontal } from 'lucide-react'
 import Image from 'next/image'
 
 export type Person = {
@@ -64,8 +55,7 @@ export function makeData(...lens: number[]) {
 }
 
 //
-export const personData = makeData(30)
-export const personColumns: ColumnDef<Person>[] = [
+export const columns: ColumnDef<Person>[] = [
   {
     accessorKey: 'firstName',
     id: 'firstName',
@@ -108,27 +98,5 @@ export const personColumns: ColumnDef<Person>[] = [
     id: 'createdAt',
     header: 'Created At',
     size: 300
-  },
-  {
-    accessorKey: 'actions',
-    id: 'actions',
-    header: 'Actions',
-    cell: props => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button aria-haspopup='true' size='icon' variant='ghost'>
-              <MoreHorizontal className='h-4 w-4' />
-              <span className='sr-only'>Toggle menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    }
   }
 ]

@@ -1,17 +1,27 @@
-table,
-thead,
-tbody,
-tfoot {
+html {
+  overflow: hidden;
+}
+
+.custom-shadcn-table,
+.custom-shadcn-thead,
+.custom-shadcn-tbody,
+.custom-shadcn-tfoot {
   display: block;
 }
 
-thead,
-tbody,
-tfoot {
+.custom-shadcn-thead,
+.custom-shadcn-tbody,
+.custom-shadcn-tfoot {
   min-width: max-content;
 }
 
-tr {
+.custom-shadcn-tbody {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.custom-shadcn-tr {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -19,8 +29,8 @@ tr {
   min-height: 50px;
 }
 
-th,
-td {
+.custom-shadcn-th,
+.custom-shadcn-td {
   display: flex;
   justify-content: flex-start;
   align-items: center;

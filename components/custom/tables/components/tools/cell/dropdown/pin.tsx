@@ -26,12 +26,14 @@ export const getPinOptions = <T,>(column: Column<T, unknown>) => {
   //
   const pinOptions = [
     {
+      key: 'unpin',
       cb: unpin,
       icon: (className: string) => <PinOff className={className} />,
       title: 'Unpin',
       selected: isCenter
     },
     {
+      key: 'pin-left',
       cb: pinLeft,
       icon: (className: string) => (
         <TableProperties
@@ -43,6 +45,7 @@ export const getPinOptions = <T,>(column: Column<T, unknown>) => {
       selected: isLeft
     },
     {
+      key: 'pin-right',
       cb: pinRight,
       icon: (className: string) => <TableProperties className={className} />,
       title: 'Pin Right',
