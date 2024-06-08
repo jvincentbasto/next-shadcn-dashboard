@@ -7,7 +7,7 @@ export const getColumnBoxShadowStyles = (
   position: ColumnPinningPosition,
   isHeader: boolean = false
 ) => {
-  const { isLeft, isRight } = getColumnPositions(position)
+  const { isLeft, isRight, isCenter } = getColumnPositions(position)
 
   //
   let styles: CSSProperties = {}
@@ -31,6 +31,11 @@ export const getColumnBoxShadowStyles = (
       boxShadow: isHeader
         ? '-15px 0px 15px -15px hsl(0deg 0% 0% / 50%)'
         : undefined
+    }
+  }
+  if (isCenter) {
+    styles = {
+      zIndex: 0
     }
   }
 
