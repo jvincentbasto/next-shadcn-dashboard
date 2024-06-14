@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 //
 const nextDynamicOptions = { ssr: false }
-const PersonDataTable = dynamic(() => import('./_client/person-data-table'), {
+const PersonDataTable = dynamic(() => import('./person-data-table'), {
   ...nextDynamicOptions
 })
 

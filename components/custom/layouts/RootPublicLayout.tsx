@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
-import MainSidebar from './sidebars/main-sidebar'
-import MainNavbar from './navbars/main-navbar'
+import MainSidebar from './sidebars/MainSidebar'
+import MainNavbar from './navbars/MainNavbar'
 import { Home, LineChart, Package, ShoppingCart, Users2 } from 'lucide-react'
 import { appConfig } from '@/config/config'
 import {

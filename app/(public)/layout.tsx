@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import RootPublicLayout from '@/components/custom/layouts/root-public-layout'
+import RootPublicLayout from '@/components/custom/layouts/RootPublicLayout'
 
 export default function HomeLayout({
   children

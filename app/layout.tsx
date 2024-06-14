@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 import './styles.css'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import StoreProvider from '@/states/redux/store/StoreProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -27,10 +28,12 @@ export default function RootLayout({
           disableTransitionOnChange
           themes={['light', 'dark', 'orange']}
         >
-          <ScrollArea className='h-screen w-screen overflow-y-auto'>
-            {children}
-            <ScrollBar orientation='horizontal' />
-          </ScrollArea>
+          <StoreProvider>
+            <ScrollArea className='h-screen w-screen overflow-y-auto'>
+              {children}
+              <ScrollBar orientation='horizontal' />
+            </ScrollArea>
+          </StoreProvider>
         </ThemeProvider>
       </body>
     </html>

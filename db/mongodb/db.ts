@@ -21,29 +21,33 @@ async function connectToDatabase() {
   console.log('environment', environment)
 
   //
-  if (cached.conn) {
-    console.log('Reuse existing connection')
-    return cached.conn
-  }
-
-  //
-  if (!cached.promise) {
-    const opts = {
-      bufferCommands: false
+  try {
+    if (cached.conn) {
+      console.log('Reuse existing connection')
+      return cached.conn
     }
 
     //
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then(mongoose => {
-      return mongoose
-    })
+    if (!cached.promise) {
+      const opts = {
+        bufferCommands: false
+      }
+
+      //
+      cached.promise = mongoose.connect(MONGODB_URI, opts).then(mongoose => {
+        return mongoose
+      })
+    }
+
+    //
+    cached.conn = await cached.promise
+    console.log('New connection')
+
+    //
+    return cached.conn
+  } catch (error) {
+    console.log('Connection Error', error)
   }
-
-  //
-  cached.conn = await cached.promise
-  console.log('New connection')
-
-  //
-  return cached.conn
 }
 
 export default connectToDatabase
