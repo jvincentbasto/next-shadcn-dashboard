@@ -1,19 +1,25 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { useAsyncDispatch } from '@/states/redux/store'
+import { useAppDispatch } from '@/states/redux/store'
 import { deleteUser } from '@/states/redux/store/slices/usersSlice'
+import { AsyncThunk } from '@reduxjs/toolkit'
 
-export default function DeleteUserForm({
-  id
-}: Readonly<{
+//
+type TProps = {
+  deleteData?: AsyncThunk<any, any, {}>
   id: string
-}>) {
-  const asyncDispatch = useAsyncDispatch()
+}
+
+//
+export default function DeleteUserForm({ deleteData, id }: Readonly<TProps>) {
+  const asyncDispatch = useAppDispatch()
 
   //
   const handleDelete = async () => {
-    asyncDispatch(deleteUser(id))
+    if (deleteData) {
+      asyncDispatch(deleteUser(id))
+    }
   }
 
   //

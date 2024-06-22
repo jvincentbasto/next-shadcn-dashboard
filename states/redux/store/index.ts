@@ -15,4 +15,4 @@ export type AppDispatch = typeof store.dispatch
 //
 export const useAppSelector = <K extends keyof RootState>(name: K) =>
   useSelector((state: RootState) => state[name])
-export const useAsyncDispatch = () => useDispatch<AppDispatch>()
+export const useAppDispatch = () => useDispatch<AppDispatch>()

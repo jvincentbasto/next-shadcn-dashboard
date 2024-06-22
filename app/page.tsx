@@ -3,7 +3,7 @@ import { axiosFetchUsers } from '@/http/axios/api/users'
 import dynamic from 'next/dynamic'
 
 //
-const Testt = dynamic(() => import('./testt'))
+const UserTest = dynamic(() => import('./UserTest'))
 
 //
 export const metadata: Metadata = {
@@ -18,6 +18,6 @@ export default async function RootPage() {
   if (!users.success) return null
 
   //
-  return <Testt data={users.data} />
+  return <UserTest data={users.data} />
   // return <p>Home Page</p>
 }

@@ -105,7 +105,7 @@ const userCreateActions = (builder: ActionReducerMapBuilder<UsersState>) => {
     .addCase(createUser.fulfilled, (state, action) => {
       state.status = 'succeeded'
       state.loading = false
-      state.data = [...state.data, action.payload]
+      state.data = action.payload ? [...state.data, action.payload] : state.data
     })
     .addCase(createUser.rejected, (state, action) => {
       state.status = 'failed'
