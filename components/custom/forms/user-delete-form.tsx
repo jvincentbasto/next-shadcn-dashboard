@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/ui/button'
 import { useAppDispatch } from '@/states/redux/store'
-import { deleteUser } from '@/states/redux/store/slices/usersSlice'
 import { AsyncThunk } from '@reduxjs/toolkit'
 
 //
@@ -13,12 +12,12 @@ type TProps = {
 
 //
 export default function DeleteUserForm({ deleteData, id }: Readonly<TProps>) {
-  const asyncDispatch = useAppDispatch()
+  const appDispatch = useAppDispatch()
 
   //
   const handleDelete = async () => {
     if (deleteData) {
-      asyncDispatch(deleteUser(id))
+      appDispatch(deleteData(id))
     }
   }
 

@@ -187,6 +187,7 @@ const usersSlice = createSlice({
 
 //
 export const { setData, setDialog, setForm } = usersSlice.actions
+export const usersReducer = usersSlice.reducer
 
 //
-export default usersSlice.reducer
+export default usersReducer

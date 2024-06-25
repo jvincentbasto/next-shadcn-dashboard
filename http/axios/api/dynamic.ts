@@ -1,7 +1,7 @@
 import api from '..'
 
 //
-export const axiosFetchUDynamic = async () => {
+export const axiosFetchDynamic = async () => {
   try {
     const response = await api.get('/dynamic')
     return response.data
@@ -21,7 +21,7 @@ export const axiosCreateDynamic = async (data: any) => {
 }
 
 //
-export const axiosFetchDynamic = async (id: string) => {
+export const axiosFetchByIdDynamic = async (id: string) => {
   try {
     const response = await api.get(`/dynamic/${id}`)
     return response.data
