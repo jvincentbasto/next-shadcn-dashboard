@@ -1,9 +1,9 @@
 import api from '..'
 
 //
-export const axiosFetchDynamic = async () => {
+export const axiosFetchDynamic = async (name: string) => {
   try {
-    const response = await api.get('/dynamic')
+    const response = await api.get(`/dynamic/${name}`)
     return response.data
   } catch (error) {
     return { success: false, error: 'Failed to get dynamic document' }
@@ -11,9 +11,9 @@ export const axiosFetchDynamic = async () => {
 }
 
 //
-export const axiosCreateDynamic = async (data: any) => {
+export const axiosCreateDynamic = async (name: string, payload: any) => {
   try {
-    const response = await api.post('/dynamic', data)
+    const response = await api.post(`/dynamic/${name}`, payload)
     return response.data
   } catch (error) {
     return { success: false, error: 'Failed to create dynamic document' }
@@ -21,9 +21,9 @@ export const axiosCreateDynamic = async (data: any) => {
 }
 
 //
-export const axiosFetchByIdDynamic = async (id: string) => {
+export const axiosFetchByIdDynamic = async (name: string, id: string) => {
   try {
-    const response = await api.get(`/dynamic/${id}`)
+    const response = await api.get(`/dynamic/${name}/${id}`)
     return response.data
   } catch (error) {
     return { success: false, error: 'Failed to get dynamic document' }
@@ -31,9 +31,13 @@ export const axiosFetchByIdDynamic = async (id: string) => {
 }
 
 //
-export const axiosUpdateDynamic = async (id: string, data: any) => {
+export const axiosUpdateDynamic = async (
+  name: string,
+  id: string,
+  payload: any
+) => {
   try {
-    const response = await api.put(`/dynamic/${id}`, data)
+    const response = await api.put(`/dynamic/${name}/${id}`, payload)
     return response.data
   } catch (error) {
     return { success: false, error: 'Failed to update dynamic document' }
@@ -41,9 +45,9 @@ export const axiosUpdateDynamic = async (id: string, data: any) => {
 }
 
 //
-export const axiosDeleteDynamic = async (id: string) => {
+export const axiosDeleteDynamic = async (name: string, id: string) => {
   try {
-    const response = await api.delete(`/dynamic/${id}`)
+    const response = await api.delete(`/dynamic/${name}/${id}`)
     return response.data
   } catch (error) {
     return { success: false, error: 'Failed to delete dynamic document' }

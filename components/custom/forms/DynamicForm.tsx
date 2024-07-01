@@ -13,19 +13,31 @@ import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 
 //
 type TProps = {
-  schemaName: string
+  formName: string
   fields: TFieldObject[]
   setDialog: ActionCreatorWithPayload<any>
+  //
+  schemaName: string
+  schemaDefinition?: { [key: string]: any }
+  schemaFields?: { [key: string]: any }[]
 }
 
 //
-export const UserForm = ({ schemaName, fields = [], setDialog }: TProps) => {
-  const name = schemaName as keyof RootState
+export const DynamicForm = ({
+  formName,
+  fields = [],
+  setDialog,
+  //
+  schemaName,
+  schemaDefinition,
+  schemaFields
+}: TProps) => {
+  const name = formName as keyof RootState
   const { form } = useSelector((state: RootState) => state[name])
 
   //
-  const createDocument = createDynamicDocument(schemaName)
-  const updateDocument = updateDynamicDocument(schemaName)
+  const createDocument = createDynamicDocument(formName, schemaName)
+  const updateDocument = updateDynamicDocument(formName, schemaName)
 
   //
   let defaultValues = {}
@@ -46,20 +58,24 @@ export const UserForm = ({ schemaName, fields = [], setDialog }: TProps) => {
       data={form}
       name={name}
       //
-      schema={zodSchema}
-      fields={fields}
+      formSchema={zodSchema}
+      formFields={fields}
       defaultValues={defaultValues}
       //
       setDialog={setDialog}
       createData={createDocument}
       updateData={updateDocument}
       //
-      title={form ? `Update ${schemaName}` : `Create ${schemaName}`}
+      title={form ? `Update ${formName}` : `Create ${formName}`}
       description={
-        form ? `Update ${schemaName} details` : `Create a new ${schemaName}`
+        form ? `Update ${formName} details` : `Create a new ${formName}`
       }
+      //
+      schemaName={schemaName}
+      schemaDefinition={schemaDefinition}
+      schemaFields={schemaFields}
     />
   )
 }
 
-export default UserForm
+export default DynamicForm

@@ -18,7 +18,7 @@ import { customDropdownPin, enableDropdownPin } from './pin'
 import { customCellSort, enableCellSort } from '../sort'
 import { hasStringMatch } from '@/lib/utilities/string'
 import { columnToolId } from '../../column/column'
-import { dropdownZIndex } from '../../../utilities/global'
+import { dropdownMenuZIndex } from '../../../utilities/global'
 
 //
 export const rowToolId = 'rowTools'
@@ -125,7 +125,8 @@ export const CustomCellDropdown = <T,>({
   const customDropdownMenu = (
     <DropdownMenuContent
       align='end'
-      className={`relative z-[${dropdownZIndex}] ${dropdownPadding}`}
+      className={`relative z-[${dropdownMenuZIndex}] ${dropdownPadding}`}
+      style={{ zIndex: dropdownMenuZIndex }}
     >
       {isEnableDropdownSearch ? (
         <>

@@ -1,1 +1,3 @@
-export const dropdownZIndex = 2000
+export const headerZIndex = 50
+export const dropdownMenuZIndex = 60
+export const dropdownSubMenuZIndex = 65

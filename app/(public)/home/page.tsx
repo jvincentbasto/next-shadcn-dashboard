@@ -1,47 +1,111 @@
 import dynamic from 'next/dynamic'
-import { File, PlusCircle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { TFieldObject } from '@/components/custom/forms/inputs/CustomFormFields'
+import {
+  convertToSchemaDefinitions,
+  createDynamicModel,
+  createDynamicSchema,
+  validateSchemaDefinitions
+} from '@/db/mongodb/models/dynamic'
+import { axiosFetchDynamic } from '@/http/axios/api/dynamic'
 
 //
 const nextDynamicOptions = { ssr: false }
-const PersonDataTable = dynamic(() => import('./person-data-table'), {
+const DynamicSlice = dynamic(() => import('./dynamicSlice'), {
   ...nextDynamicOptions
 })
 
-export default function HomePage() {
+//
+const fields: TFieldObject[] = [
+  {
+    typeValue: 'string',
+    typeInput: 'text',
+    id: 'name',
+    name: 'name',
+    slug: 'name',
+    label: 'Name',
+    placeholder: 'Enter Name',
+    description: 'Enter Name',
+    required: false,
+    disabled: false,
+    defaultValue: '',
+    typeOptions: [
+      {
+        name: 'min',
+        defaultValue: 1,
+        error: 'Name is required'
+      }
+    ]
+  },
+  {
+    typeValue: 'string',
+    typeInput: 'email',
+    id: 'email',
+    name: 'email',
+    slug: 'email',
+    label: 'Email',
+    placeholder: 'Enter Email',
+    description: 'Enter Email',
+    required: false,
+    disabled: false,
+    defaultValue: '',
+    typeOptions: [
+      {
+        name: 'min',
+        defaultValue: 1,
+        error: 'Email is required'
+      }
+    ]
+  }
+]
+
+//
+const schema = {
+  name: {
+    type: 'String',
+    required: true
+  },
+  email: {
+    type: 'String',
+    required: true,
+    unique: true
+  }
+}
+
+//
+const dataSchema = {
+  schemaName: 'User',
+  formName: 'users',
+  schemaType: 'site',
+  schema,
+  fields
+}
+
+//
+export default async function HomePage() {
+  const { schemaName, schema } = dataSchema
+
+  //
+  const jsonSchema = JSON.stringify(schema)
+  const parsedSchema = JSON.parse(jsonSchema)
+
+  //
+  const convertedSchema = convertToSchemaDefinitions(parsedSchema)
+  const validate = validateSchemaDefinitions(convertedSchema)
+  if (validate.length > 0) return null
+
+  //
+  const dynamicSchema = createDynamicSchema(convertedSchema)
+  const dynamicModel = createDynamicModel(schemaName, dynamicSchema)
+  if (!dynamicModel) return null
+
+  //
+  const dynamicDocument = await axiosFetchDynamic(schemaName)
+  if (!dynamicDocument.success) return null
+
   //
   return (
     <div className='min-h-screen w-full bg-muted/40 px-4 pt-4'>
-      <Tabs defaultValue='all'>
-        <div className='flex items-center'>
-          <TabsList>
-            <TabsTrigger value='all'>All</TabsTrigger>
-            <TabsTrigger value='active'>Active</TabsTrigger>
-            <TabsTrigger value='draft'>Draft</TabsTrigger>
-            <TabsTrigger value='archived' className='hidden sm:flex'>
-              Archived
-            </TabsTrigger>
-          </TabsList>
-          <div className='ml-auto flex items-center gap-2'>
-            <Button size='sm' variant='outline' className='h-8 gap-1'>
-              <File className='h-3.5 w-3.5' />
-              <span className='sr-only sm:not-sr-only sm:whitespace-nowrap'>
-                Export
-              </span>
-            </Button>
-            <Button size='sm' className='h-8 gap-1'>
-              <PlusCircle className='h-3.5 w-3.5' />
-              <span className='sr-only sm:not-sr-only sm:whitespace-nowrap'>
-                Add Product
-              </span>
-            </Button>
-          </div>
-        </div>
-        <TabsContent value='all' className='w-full'>
-          <PersonDataTable />
-        </TabsContent>
-      </Tabs>
+      <DynamicSlice schema={dataSchema} data={dynamicDocument.data} />
     </div>
   )
 }

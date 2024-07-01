@@ -8,6 +8,7 @@ import {
   DropdownMenuSubTrigger
 } from '@/components/ui/dropdown-menu'
 import { customDropdownMenuItem } from './dropdown'
+import { dropdownSubMenuZIndex } from '../../../utilities/global'
 
 //
 export const enableDropdownPin = true
@@ -69,7 +70,10 @@ export const customDropdownPin = <T,>(column: Column<T, unknown>) => {
         <span>Pin</span>
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
-        <DropdownMenuSubContent className='min-w-[200px]'>
+        <DropdownMenuSubContent
+          className='min-w-[200px]'
+          style={{ zIndex: dropdownSubMenuZIndex }}
+        >
           {pinOptions.map(option => customDropdownMenuItem(option))}
         </DropdownMenuSubContent>
       </DropdownMenuPortal>

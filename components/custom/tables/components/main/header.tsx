@@ -9,6 +9,7 @@ import { customTableHead } from '../parts/cells'
 import { getColumnPositions } from '../utilities/column'
 import { hasStringMatch } from '@/lib/utilities/string'
 import { getTableHeaderPositionClassNames } from '../utilities/row'
+import { headerZIndex } from '../utilities/global'
 
 //
 export const setCustomHeaderGroup = <TData,>(
@@ -85,6 +86,7 @@ export const customTableHeader = <T,>(
         `${background} ${headerPositions} ${headerBoxShadow}`,
         className
       )}
+      style={{ zIndex: headerZIndex }}
     >
       <TableRow className={`border-0 hover:${background}`}>
         {customTableHeaderColumn(table, 'left')}

@@ -13,6 +13,7 @@ import {
   DropdownMenuSubTrigger
 } from '@/components/ui/dropdown-menu'
 import { customDropdownMenuItem } from './dropdown'
+import { dropdownSubMenuZIndex } from '../../../utilities/global'
 
 //
 export const enableDropdownSort = true
@@ -66,7 +67,10 @@ export const customDropdownSort = <T,>(column: Column<T, unknown>) => {
         <span>Sort</span>
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
-        <DropdownMenuSubContent className='min-w-[200px]'>
+        <DropdownMenuSubContent
+          className='min-w-[200px]'
+          style={{ zIndex: dropdownSubMenuZIndex }}
+        >
           {options.map(option => customDropdownMenuItem(option))}
         </DropdownMenuSubContent>
       </DropdownMenuPortal>

@@ -1,15 +1,16 @@
 'use client'
 
-import UserForm from '@/components/custom/forms/UserForm'
+import DynamicForm from '@/components/custom/forms/DynamicForm'
 import DeleteUserForm from '@/components/custom/forms/user-delete-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '@/states/redux/store'
+import { RootState, useAppDispatch } from '@/states/redux/store'
 import { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { TFieldObject } from '@/components/custom/forms/inputs/CustomFormFields'
 import {
   TDynamicData,
   createDocumentSlice,
+  createDynamicDocument,
   deleteDynamicDocument
 } from '@/states/redux/store/slices/dynamicSlice'
 import injectSlice from '@/states/redux/store/injectSlice'
@@ -79,37 +80,78 @@ const fields: TFieldObject[] = [
 ]
 
 //
+const schema = {
+  name: {
+    type: 'String',
+    required: true
+  },
+  email: {
+    type: 'String',
+    required: true,
+    unique: true
+  }
+}
+const sample = {
+  name: { type: 'String', required: true },
+  email: { type: 'String', required: true, unique: true },
+  age: { type: 'Number', min: 0 },
+  isActive: { type: 'Boolean', default: true },
+  address: {
+    street: { type: 'String' },
+    city: { type: 'String' },
+    state: { type: 'String' },
+    zip: { type: 'Number' }
+  }
+}
+const schemaDefinition = JSON.stringify(sample)
+const parsedSchemaDefinition = JSON.parse(schemaDefinition)
+
+const samplePost = {
+  name: 'sample',
+  email: 'sample@example.com',
+  isActive: true
+}
+
+//
 const dynamicSchema = {
-  schemaName: 'users',
+  schemaName: 'User',
+  formName: 'users',
   schemaType: 'site',
+  schema,
   fields
 }
 
 //
 export const UserTest = ({ data = [] }: Readonly<{ data: TDynamicData[] }>) => {
   const dispatch = useDispatch()
+  const appDispatch = useAppDispatch()
 
   //
-  const { schemaName } = dynamicSchema
+  const { schemaName, formName } = dynamicSchema
 
   //
-  const document = createDocumentSlice(schemaName)
-  const { reducer, actions } = document
+  const documentSlice = createDocumentSlice(formName, schemaName)
+  const { reducer, actions } = documentSlice
 
   //
-  injectSlice(schemaName, reducer)
+  const sampleName = 'SampleUser'
+  useEffect(() => {
+    injectSlice(formName, reducer)
+  }, [])
+
+  //
   const { setData, setDialog, setForm } = actions
-  const deleteDocument = deleteDynamicDocument(schemaName)
+  const deleteDocument = deleteDynamicDocument(formName, schemaName)
 
   //
-  const { data: stateData } = useSelector(
-    (state: RootState) => state[schemaName]
-  )
+  const { data: stateData } = useSelector((state: RootState) => state[formName])
 
   //
   useEffect(() => {
     dispatch(setData(data))
   }, [JSON.stringify(data)])
+
+  const createDocument = createDynamicDocument(sampleName, schemaName)
 
   //
   return (
@@ -119,6 +161,16 @@ export const UserTest = ({ data = [] }: Readonly<{ data: TDynamicData[] }>) => {
         onClick={() => {
           dispatch(setDialog(true))
           dispatch(setForm(null))
+
+          // //
+          // const payload = {
+          //   modelName: sampleName,
+          //   schemaDefinition,
+          //   data: samplePost
+          // }
+          // if (createDocument) {
+          //   appDispatch(createDocument(payload))
+          // }
         }}
       >
         Create
@@ -141,7 +193,12 @@ export const UserTest = ({ data = [] }: Readonly<{ data: TDynamicData[] }>) => {
           </li>
         ))}
       </ul>
-      <UserForm schemaName={schemaName} fields={fields} setDialog={setDialog} />
+      <DynamicForm
+        formName={formName}
+        schemaName={schemaName}
+        fields={fields}
+        setDialog={setDialog}
+      />
     </div>
   )
 }

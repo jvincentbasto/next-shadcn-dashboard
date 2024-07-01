@@ -1,4 +1,5 @@
 import { RowPinningPosition } from '@tanstack/react-table'
+import { headerZIndex } from './global'
 
 //
 // ##############################
@@ -22,12 +23,12 @@ export const getTableHeaderPositionStyles = () => {
   return {
     position: 'sticky',
     top: '0',
-    zIndex: '1000'
+    zIndex: `${headerZIndex}`
   }
 }
 
 //
 export const getTableHeaderPositionClassNames = () => {
-  const stickyHeader = 'sticky top-0 z-[1000] shadow-lg'
+  const stickyHeader = `sticky top-0 z-[${headerZIndex}] shadow-lg`
   return stickyHeader
 }

@@ -17,8 +17,8 @@ type Props<TSchema> = {
   data?: { [key: string]: any } | null
   name: keyof RootState
   //
-  schema: TSchema
-  fields: TFieldObject[]
+  formSchema: TSchema
+  formFields: TFieldObject[]
   defaultValues: DefaultValues<z.TypeOf<any>>
   //
   setDialog: ActionCreatorWithPayload<any>
@@ -27,6 +27,10 @@ type Props<TSchema> = {
   //
   title?: string
   description?: string
+  //
+  schemaName?: string
+  schemaDefinition?: { [key: string]: any }
+  schemaFields?: { [key: string]: any }[]
 }
 
 //
@@ -37,8 +41,8 @@ export const CustomForm = <
   data,
   name,
   //
-  schema,
-  fields,
+  formSchema,
+  formFields,
   defaultValues,
   //
   setDialog,
@@ -46,14 +50,18 @@ export const CustomForm = <
   updateData,
   //
   title,
-  description
+  description,
+  //
+  schemaName,
+  schemaDefinition,
+  schemaFields
 }: Props<TSchema>) => {
   const dispatch = useDispatch()
   const appDispatch = useAppDispatch()
   const { loading, dialog } = useAppSelector(name)
 
   //
-  const form = useFormBySchema(schema, defaultValues)
+  const form = useFormBySchema(formSchema, defaultValues)
   const { handleSubmit, setValue, reset, setError } = form
 
   //
@@ -80,8 +88,8 @@ export const CustomForm = <
   }, [JSON.stringify(data)])
 
   //
-  const customHandleSubmit = async (values: z.infer<typeof schema>) => {
-    const result = schema.safeParse(values)
+  const customHandleSubmit = async (values: z.infer<typeof formSchema>) => {
+    const result = formSchema.safeParse(values)
 
     //
     if (!result.success) {
@@ -108,9 +116,19 @@ export const CustomForm = <
 
     //
     try {
-      let payload = { ...values }
+      let payload: { [key: string]: any } = {
+        data: values,
+        modelName: schemaName,
+        schemaDefinition,
+        fields: schemaFields
+      }
+
+      //
       if (data) {
-        payload = { ...payload, _id: data?._id }
+        const id = data?._id
+        payload = { ...payload, data: { ...payload.data, id, _id: id } }
+
+        //
         if (updateData) {
           appDispatch(updateData(payload))
         }
@@ -133,7 +151,7 @@ export const CustomForm = <
     <Form {...form}>
       <form onSubmit={handleSubmit(customHandleSubmit)}>
         <div className='mt-6 grid w-full items-center gap-4'>
-          {fields.map(field => {
+          {formFields.map(field => {
             //
             const zodField = field.name as Path<TypeOf<TSchema>>
             const match = zodField && zodFields.includes(zodField)

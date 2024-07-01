@@ -58,47 +58,50 @@ export const createDocumentReducer = () => {
 }
 
 //
-export const fetchDynamicDocument = (name: string) =>
-  createAsyncThunk(`${name}/fetchDocument`, async () => {
-    const response = await axiosFetchDynamic()
+export const fetchDynamicDocument = (formName: string, schemaName: string) =>
+  createAsyncThunk(`${formName}/fetchDocument`, async () => {
+    const response = await axiosFetchDynamic(schemaName)
     return response.data ?? []
   })
 
 //
-export const createDynamicDocument = (name: string) =>
-  createAsyncThunk(`${name}/createDocument`, async (data: any) => {
-    const response = await axiosCreateDynamic(data)
+export const createDynamicDocument = (formName: string, schemaName: string) =>
+  createAsyncThunk(`${formName}/createDocument`, async (data: any) => {
+    const response = await axiosCreateDynamic(schemaName, data)
     return response.data
   })
 
 //
-export const updateDynamicDocument = (name: string) =>
-  createAsyncThunk(`${name}/updateDocument`, async (payload: TDynamicData) => {
-    const id = payload._id
-    const data = { ...payload, _id: undefined }
+export const updateDynamicDocument = (formName: string, schemaName: string) =>
+  createAsyncThunk(
+    `${formName}/updateDocument`,
+    async (payload: TDynamicData) => {
+      const id = payload.data._id
 
-    //
-    const response = await axiosUpdateDynamic(id, data)
-    return response.data
-  })
+      //
+      const response = await axiosUpdateDynamic(schemaName, id, payload)
+      return response.data
+    }
+  )
 
 //
-export const deleteDynamicDocument = (name: string) =>
-  createAsyncThunk(`${name}/deleteDocument`, async (id: string) => {
-    const response = await axiosDeleteDynamic(id)
+export const deleteDynamicDocument = (formName: string, schemaName: string) =>
+  createAsyncThunk(`${formName}/deleteDocument`, async (id: string) => {
+    const response = await axiosDeleteDynamic(schemaName, id)
     return { _id: response.data ?? '' }
   })
 
 //
 export const createDocumentExtraReducers = (
-  name: string,
+  formName: string,
+  schemaName: string,
   builder: ActionReducerMapBuilder<TState>
 ) => {
   //
-  const fetchDocument = fetchDynamicDocument(name)
-  const createDocument = createDynamicDocument(name)
-  const updateDocument = updateDynamicDocument(name)
-  const deleteDocument = deleteDynamicDocument(name)
+  const fetchDocument = fetchDynamicDocument(formName, schemaName)
+  const createDocument = createDynamicDocument(formName, schemaName)
+  const updateDocument = updateDynamicDocument(formName, schemaName)
+  const deleteDocument = deleteDynamicDocument(formName, schemaName)
 
   //
   const documentFetchActions = (builder: ActionReducerMapBuilder<TState>) => {
@@ -193,16 +196,16 @@ export const createDocumentExtraReducers = (
 }
 
 //
-export const createDocumentSlice = (name: string) => {
+export const createDocumentSlice = (formName: string, schemaName: string) => {
   //
   const documentSlice = createSlice({
-    name,
+    name: formName,
     initialState,
     reducers: {
       ...createDocumentReducer()
     },
     extraReducers: builder => {
-      createDocumentExtraReducers(name, builder)
+      createDocumentExtraReducers(formName, schemaName, builder)
     }
   })
 
