@@ -88,7 +88,7 @@ export const updateDynamicDocument = (formName: string, schemaName: string) =>
 export const deleteDynamicDocument = (formName: string, schemaName: string) =>
   createAsyncThunk(`${formName}/deleteDocument`, async (id: string) => {
     const response = await axiosDeleteDynamic(schemaName, id)
-    return { _id: response.data ?? '' }
+    return response.data
   })
 
 //

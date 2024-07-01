@@ -124,8 +124,11 @@ export async function PUT(
     //
     await connectToDatabase()
     const document = await dynamicModel.findByIdAndUpdate(documentId, data, {
+      new: true,
       runValidators: true
     })
+    console.log('put document', document)
+    console.log('data', data)
 
     //
     if (!document) {
@@ -186,6 +189,8 @@ export async function DELETE(
         { status: 404 }
       )
     }
+    console.log('delete document', document)
+    console.log('documentId', documentId)
 
     //
     return NextResponse.json({ success: true, data: document }, { status: 200 })

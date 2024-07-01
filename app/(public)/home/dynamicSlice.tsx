@@ -57,7 +57,12 @@ export default function DynamicSlice({
   }
 
   //
-  const { data: stateData } = useSelector((state: RootState) => state[formName])
+  const {
+    data: stateData,
+    loading,
+    status
+  } = useSelector((state: RootState) => state[formName])
+  console.log('loading', loading, status)
 
   //
   useEffect(() => {

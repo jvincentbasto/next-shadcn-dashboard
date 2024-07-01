@@ -112,6 +112,8 @@ export async function POST(
         { status: 404 }
       )
     }
+    console.log('post document',document);
+    console.log('data',data);
 
     //
     return NextResponse.json({ success: true, data: document }, { status: 201 })
