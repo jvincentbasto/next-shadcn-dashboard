@@ -5,32 +5,68 @@ import { Button } from '@/components/ui/button'
 import { RootState, useAppSelector, useAppDispatch } from '@/states/redux/store'
 import { useDispatch } from 'react-redux'
 import CustomFormDialog from './CustomFormDialog'
-import CustomFormFields, { TFieldObject } from './inputs/CustomFormFields'
+import CustomFormFields from './inputs/CustomFormFields'
 import { DefaultValues, Path, PathValue } from 'react-hook-form'
 import { TypeOf, z } from 'zod'
 import { Form } from '@/components/ui/form'
 import { ActionCreatorWithPayload, AsyncThunk } from '@reduxjs/toolkit'
 import { useFormBySchema } from '@/lib/hooks/reactHookForm'
+import {
+  TFieldDocument,
+  TNameFormats,
+  TSchemaDefinition
+} from '@/db/mongodb/utilities'
+import { TRouteFields } from '@/db/mongodb/utilities/documents'
 
 //
-type Props<TSchema> = {
-  data?: { [key: string]: any } | null
-  name: keyof RootState
-  //
-  formSchema: TSchema
-  formFields: TFieldObject[]
+type TFormData<T> = {
+  formName: keyof RootState
+  formSchema: T
+  formFields: TFieldDocument[]
   defaultValues: DefaultValues<z.TypeOf<any>>
-  //
-  setDialog: ActionCreatorWithPayload<any>
-  createData?: AsyncThunk<any, any, {}>
-  updateData?: AsyncThunk<any, any, {}>
-  //
+}
+
+//
+type TFormActions = {
+  [key: string]: any
+  setDialog: ActionCreatorWithPayload<boolean>
+}
+
+//
+type TAsyncCallback = AsyncThunk<any, any, {}>
+type TAsyncActions = {
+  [key: string]: any
+  setDialog: ActionCreatorWithPayload<boolean>
+  createCb?: TAsyncCallback
+  updateCb?: TAsyncCallback
+}
+
+//
+type TSchemaDocument = {
+  [key: string]: any
+  schemaName?: string
+  schemaDefinition?: TSchemaDefinition
+  schemaFields?: TRouteFields[]
+}
+
+//
+type TProperties = {
+  [key: string]: any
   title?: string
   description?: string
+  form?: TNameFormats
+}
+
+//
+type TProps<T> = {
+  data?: { [key: string]: any } | null
+  formData: TFormData<T>
   //
-  schemaName?: string
-  schemaDefinition?: { [key: string]: any }
-  schemaFields?: { [key: string]: any }[]
+  formActions: TFormActions
+  asyncActions: TAsyncActions
+  schema?: TSchemaDocument
+  //
+  properties?: TProperties
 }
 
 //
@@ -39,26 +75,35 @@ export const CustomForm = <
   // TValues extends z.infer<TSchema>
 >({
   data,
-  name,
+  formData,
   //
-  formSchema,
-  formFields,
-  defaultValues,
+  formActions,
+  asyncActions,
+  schema,
   //
-  setDialog,
-  createData,
-  updateData,
-  //
-  title,
-  description,
-  //
-  schemaName,
-  schemaDefinition,
-  schemaFields
-}: Props<TSchema>) => {
+  properties
+}: TProps<TSchema>) => {
   const dispatch = useDispatch()
   const appDispatch = useAppDispatch()
-  const { loading, dialog } = useAppSelector(name)
+
+  //
+  const { formName, formSchema, formFields, defaultValues } = formData
+
+  //
+  const { setDialog } = formActions
+  const { createCb, updateCb } = asyncActions
+  const { schemaName, schemaDefinition, schemaFields } = schema ?? {}
+
+  //
+  const { title, description, form: formFormat } = properties ?? {}
+  const { singular } = formFormat ?? {
+    singular: 'Document',
+    plural: 'Documents'
+  }
+
+  //
+  const selector = useAppSelector(formName)
+  const { loading, dialog } = selector
 
   //
   const form = useFormBySchema(formSchema, defaultValues)
@@ -66,8 +111,6 @@ export const CustomForm = <
 
   //
   const zodFields = Object.keys(defaultValues).map(key => key) ?? []
-
-  //
   useEffect(() => {
     if (data) {
       for (const [key, value] of Object.entries(data)) {
@@ -84,6 +127,8 @@ export const CustomForm = <
         >
         setValue(field, fieldValue)
       }
+    } else {
+      reset()
     }
   }, [JSON.stringify(data)])
 
@@ -125,16 +170,12 @@ export const CustomForm = <
 
       //
       if (data) {
-        const id = data?._id
-        payload = { ...payload, data: { ...payload.data, id, _id: id } }
-
-        //
-        if (updateData) {
-          appDispatch(updateData(payload))
+        if (updateCb) {
+          appDispatch(updateCb(payload))
         }
       } else {
-        if (createData) {
-          appDispatch(createData(payload))
+        if (createCb) {
+          appDispatch(createCb(payload))
         }
       }
 
@@ -147,28 +188,28 @@ export const CustomForm = <
   }
 
   //
+  const contentFields = formFields.map(field => {
+    const zodField = field.name as Path<TypeOf<TSchema>>
+    const match = zodField && zodFields.includes(zodField)
+
+    //
+    if (!match) return null
+    return (
+      <CustomFormFields
+        key={zodField}
+        form={form}
+        name={zodField}
+        field={field}
+      />
+    )
+  })
+
+  //
   const contentForm = (
     <Form {...form}>
       <form onSubmit={handleSubmit(customHandleSubmit)}>
         <div className='mt-6 grid w-full items-center gap-4'>
-          {formFields.map(field => {
-            //
-            const zodField = field.name as Path<TypeOf<TSchema>>
-            const match = zodField && zodFields.includes(zodField)
-
-            //
-            if (!match) return null
-
-            //
-            return (
-              <CustomFormFields
-                key={field.name}
-                form={form}
-                name={zodField}
-                options={field}
-              />
-            )
-          })}
+          {contentFields}
           <Button type='submit' className='mt-1' disabled={loading}>
             {data ? 'Update' : 'Create'}
           </Button>
@@ -178,14 +219,20 @@ export const CustomForm = <
   )
 
   //
-  let defaultTitle = data ? 'Update Document' : 'Create Document'
+  let defaultTitle = data ? `Update ${singular}` : `Create ${singular}`
   let defaultDescription = data
-    ? 'Update document details'
-    : 'Create a new document'
+    ? `Update ${singular} details`
+    : `Create a new ${singular}`
 
   //
   defaultTitle = title ?? defaultTitle
   defaultDescription = description ?? defaultDescription
+
+  //
+  const handleDialogOpen = (value: boolean) => {
+    dispatch(setDialog(value))
+    reset()
+  }
 
   //
   return (
@@ -195,8 +242,7 @@ export const CustomForm = <
       description={defaultDescription}
       dialogOpen={dialog}
       dialogOnOpenChange={(value: boolean) => {
-        dispatch(setDialog(value))
-        reset()
+        handleDialogOpen(value)
       }}
     >
       {contentForm}

@@ -1,6 +1,5 @@
+import { ProjectSchema } from '@/db/mongodb/models/Schema'
 import connectToDatabase from '@/db/mongodb/db'
-import { formFields } from '@/db/mongodb/definitions/user'
-import User from '@/db/mongodb/models/User'
 import {
   formatDocument,
   formatDocuments,
@@ -8,18 +7,19 @@ import {
   validateRouteDynamicFields
 } from '@/db/mongodb/utilities/documents'
 import { NextRequest, NextResponse } from 'next/server'
+import { formFields } from '@/db/mongodb/definitions/schema'
 
 export async function GET() {
   try {
     await connectToDatabase()
-    const document = await User.find({})
+    const document = await ProjectSchema.find({})
 
     //
     const format = formatDocuments(document)
     return NextResponse.json({ success: true, data: format })
   } catch (error) {
     return NextResponse.json(
-      { success: false, error: { message: 'Failed to get users' } },
+      { success: false, error: { message: 'Failed to get schemas' } },
       { status: 500 }
     )
   }
@@ -52,14 +52,14 @@ export async function POST(request: NextRequest) {
 
     //
     await connectToDatabase()
-    const document = await User.create(data)
+    const document = await ProjectSchema.create(data)
 
     //
     const format = formatDocument(document)
     return NextResponse.json({ success: true, data: format }, { status: 201 })
   } catch (error) {
     return NextResponse.json(
-      { success: false, error: { message: 'Failed to create user' } },
+      { success: false, error: { message: 'Failed to create schema' } },
       { status: 500 }
     )
   }

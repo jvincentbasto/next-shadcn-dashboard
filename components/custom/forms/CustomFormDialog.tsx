@@ -10,6 +10,7 @@ import {
 
 //
 type TCustomForm = {
+  [key: string]: any
   btnTitle?: string
   title?: string
   description?: string

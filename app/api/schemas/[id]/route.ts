@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import connectToDatabase from '@/db/mongodb/db'
-import User from '@/db/mongodb/models/User'
 import {
   formatDocument,
   getSchemaFieldValidations,
   validateRouteDynamicFields
 } from '@/db/mongodb/utilities/documents'
-import { formFields } from '@/db/mongodb/definitions/user'
+import ProjectSchema from '@/db/mongodb/models/Schema'
+import { formFields } from '@/db/mongodb/definitions/schema'
 
 //
 export async function GET(
@@ -18,12 +18,12 @@ export async function GET(
   //
   try {
     await connectToDatabase()
-    const document = await User.findById(id)
+    const document = await ProjectSchema.findById(id)
 
     //
     if (!document) {
       return NextResponse.json(
-        { success: false, error: { message: 'User not found' } },
+        { success: false, error: { message: 'Schema not found' } },
         { status: 404 }
       )
     }
@@ -71,7 +71,7 @@ export async function PUT(
 
     //
     await connectToDatabase()
-    const document = await User.findByIdAndUpdate(id, body, {
+    const document = await ProjectSchema.findByIdAndUpdate(id, body, {
       new: true,
       runValidators: true
     })
@@ -79,7 +79,7 @@ export async function PUT(
     //
     if (!document) {
       return NextResponse.json(
-        { success: false, error: { message: 'User not found' } },
+        { success: false, error: { message: 'Schema not found' } },
         { status: 404 }
       )
     }
@@ -89,7 +89,7 @@ export async function PUT(
     return NextResponse.json({ success: true, data: format }, { status: 200 })
   } catch (error) {
     return NextResponse.json(
-      { success: false, error: { message: 'Failed to update user' } },
+      { success: false, error: { message: 'Failed to update schema' } },
       { status: 500 }
     )
   }
@@ -105,12 +105,12 @@ export async function DELETE(
   //
   try {
     await connectToDatabase()
-    const document = await User.findByIdAndDelete(id)
+    const document = await ProjectSchema.findByIdAndDelete(id)
 
     //
     if (!document) {
       return NextResponse.json(
-        { success: false, error: { message: 'User not found' } },
+        { success: false, error: { message: 'Schema not found' } },
         { status: 404 }
       )
     }
@@ -120,7 +120,7 @@ export async function DELETE(
     return NextResponse.json({ success: true, data: format }, { status: 200 })
   } catch (error) {
     return NextResponse.json(
-      { success: false, error: { message: 'Failed to delete user' } },
+      { success: false, error: { message: 'Failed to delete schema' } },
       { status: 500 }
     )
   }

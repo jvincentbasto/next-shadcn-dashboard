@@ -19,11 +19,11 @@ export const customCellActions = <T,>(
         variant='ghost'
         size='icon'
         onClick={() => {
-          const { __v, ...rest } = { __v: '', ...original }
+          const data = original
 
           //
           if (updateCb) {
-            updateCb({ ...rest })
+            updateCb(data)
           }
         }}
       >
@@ -33,10 +33,11 @@ export const customCellActions = <T,>(
         variant='ghost'
         size='icon'
         onClick={() => {
-          const { _id } = { _id: '', ...original }
+          const { id } = { id: '', ...original }
 
+          //
           if (deleteCb) {
-            deleteCb(_id)
+            deleteCb(id)
           }
         }}
       >

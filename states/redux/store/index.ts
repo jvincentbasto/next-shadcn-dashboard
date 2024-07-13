@@ -5,7 +5,8 @@ import {
 } from '@reduxjs/toolkit'
 import { useDispatch, useSelector } from 'react-redux'
 import { Reducer } from 'redux'
-import usersReducer from './slices/usersSlice'
+import userReducer from './slices/userSlice'
+import schemaReducer from './slices/schemaSlice'
 
 interface AsyncReducers {
   [key: string]: Reducer
@@ -13,7 +14,8 @@ interface AsyncReducers {
 
 const staticReducers: ReducersMapObject = {
   // Your static reducers here
-  users: usersReducer
+  users: userReducer,
+  schemas: schemaReducer
 }
 
 const createReducer = (asyncReducers: AsyncReducers) =>

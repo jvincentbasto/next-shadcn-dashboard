@@ -1,51 +1,62 @@
 import api from '..'
 
 //
+export const customPath = 'users'
 export const axiosFetchUsers = async () => {
+  //
+  let response
   try {
-    const response = await api.get('/users')
+    response = await api.get(`/${customPath}`)
     return response.data
   } catch (error) {
-    return { success: false, error: 'Failed to get users' }
+    return { success: false, error: { message: 'Failed to get users' } }
   }
 }
 
 //
 export const axiosCreateUser = async (data: any) => {
+  //
+  let response
   try {
-    const response = await api.post('/users', data)
+    response = await api.post(`/${customPath}`, data)
     return response.data
   } catch (error) {
-    return { success: false, error: 'Failed to create user' }
+    return { success: false, error: { message: 'Failed to create user' } }
   }
 }
 
 //
 export const axiosFetchUser = async (id: string) => {
+  //
+  let response
   try {
-    const response = await api.get(`/users/${id}`)
+    response = await api.get(`/${customPath}/${id}`)
     return response.data
   } catch (error) {
-    return { success: false, error: 'Failed to get user' }
+    return { success: false, error: { message: 'Failed to get user' } }
   }
 }
 
 //
 export const axiosUpdateUser = async (id: string, data: any) => {
+  //
+  let response
   try {
-    const response = await api.put(`/users/${id}`, data)
+    response = await api.put(`/${customPath}/${id}`, data)
     return response.data
   } catch (error) {
-    return { success: false, error: 'Failed to update user' }
+    return { success: false, error: { message: 'Failed to update user' } }
   }
 }
 
 //
 export const axiosDeleteUser = async (id: string) => {
+  //
+  let response
   try {
-    const response = await api.delete(`/users/${id}`)
+    response = await api.delete(`/${customPath}/${id}`)
     return response.data
   } catch (error) {
-    return { success: false, error: 'Failed to delete user' }
+    return { success: false, error: { message: 'Failed to delete user' } }
   }
 }

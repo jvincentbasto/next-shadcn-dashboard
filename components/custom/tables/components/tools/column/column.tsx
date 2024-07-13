@@ -4,7 +4,7 @@ import {
   customSelectColumnHeader
 } from '../column/select'
 import { customCellActions } from '../cell/actions'
-import { TFieldObject } from '@/components/custom/forms/inputs/CustomFormFields'
+import { TFieldDocument } from '@/db/mongodb/utilities'
 
 //
 export const columnToolId = 'cellTools'
@@ -66,9 +66,13 @@ export const includeCustomColumnTools = <T,>(
   columns: ColumnDef<T>[],
   start = true,
   last = false,
-  updateCb?: (arg: any, ...args: any[]) => void,
-  deleteCb?: (arg: any, ...args: any[]) => void
+  actions: {
+    [key: string]: any
+    updateCb?: (arg: any, ...args: any[]) => void
+    deleteCb?: (arg: any, ...args: any[]) => void
+  }
 ) => {
+  const { updateCb, deleteCb } = actions
   const list = [...columns]
 
   //
@@ -84,14 +88,17 @@ export const includeCustomColumnTools = <T,>(
 }
 
 //
-export const getTableColumnsBySchema = (fields: TFieldObject[]) => {
+export const getTableColumnsBySchema = (fields: TFieldDocument[]) => {
   type TColumnDef = {
     [key: string]: any
   }
 
   //
   const columns: ColumnDef<TColumnDef>[] = fields.map(field => {
-    let id = field.name ?? field.slug ?? field.id ?? field.label ?? ''
+    const { id: fieldId, name, slug } = field
+
+    //
+    let id = name ?? slug ?? fieldId ?? ''
     id = id.toString().toLowerCase().replace(/ /g, '_')
 
     //
