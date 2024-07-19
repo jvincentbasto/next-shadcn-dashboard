@@ -1,443 +1,136 @@
-import { TFieldDocument } from '@/db/mongodb/utilities'
+import { setByZodMethods } from './dynamic/zodTypes/methods/index'
+import {
+  TFieldDocument,
+  TPrimaryType,
+  TSecondaryTypes
+} from '@/db/mongodb/utilities'
 import { z, ZodObject } from 'zod'
+import { setZodString } from './dynamic/zodTypes/primary/string'
+import { setZodNumber } from './dynamic/zodTypes/primary/number'
+import { setZodBigint } from './dynamic/zodTypes/primary/bigInt'
+import { setZodBoolean } from './dynamic/zodTypes/primary/boolean'
+import { setZodDate } from './dynamic/zodTypes/primary/date'
+import { setZodSymbol } from './dynamic/zodTypes/primary/symbol'
+import { setZodEnum } from './dynamic/zodTypes/primary/enum'
+import { setZodNan } from './dynamic/zodTypes/optional/nan'
+import { setZodUndefined } from './dynamic/zodTypes/optional/undefined'
+import { setZodNull } from './dynamic/zodTypes/optional/null'
+import { setZodVoid } from './dynamic/zodTypes/optional/void'
+import { setZodAny } from './dynamic/zodTypes/optional/any'
+import { setZodUnknown } from './dynamic/zodTypes/optional/unknown'
+import { setZodNever } from './dynamic/zodTypes/optional/never'
+import { sortBy } from 'lodash'
+import { setZodObject } from './dynamic/zodTypes/primary/object'
 
-//
+// ##########
 export const getZodObjectKeys = (schema: ZodObject<any>) => {
   return schema.keyof().options
 }
 
 // ##########
-export const setZodString = (formField: TFieldDocument) => {
-  const { types, typeOptions = [] } = formField
-  const { type: typeValue } = types
-
-  //
-  const match = typeValue === 'string'
-  if (!match) return null
-
-  //
-  let zodType = z.string()
-  for (const options of typeOptions) {
-    const { name, value, error } = options
-
-    //
-    if (name === 'min') {
-      zodType.min(value, { message: error })
-    }
-    if (name === 'max') {
-      zodType.max(value, { message: error })
-    }
-    if (name === 'length') {
-      zodType.length(value, { message: error })
-    }
-
-    //
-    if (name === 'email') {
-      zodType.email({ message: error })
-    }
-    if (name === 'url') {
-      zodType.url({ message: error })
-    }
-    if (name === 'emoji') {
-      zodType.emoji({ message: error })
-    }
-
-    //
-    if (name === 'uuid') {
-      zodType.uuid({ message: error })
-    }
-
-    //
-    if (name === 'regex') {
-      zodType.regex(value, { message: error })
-    }
-    if (name === 'includes') {
-      zodType.includes(value, { message: error, position: 0 })
-    }
-    if (name === 'startsWith') {
-      zodType.startsWith(value, { message: error })
-    }
-    if (name === 'endsWith') {
-      zodType.endsWith(value, { message: error })
-    }
-
-    //
-    if (name === 'trim') {
-      zodType.trim()
-    }
-    if (name === 'toLowerCase') {
-      zodType.toLowerCase()
-    }
-    if (name === 'toUpperCase') {
-      zodType.toUpperCase()
-    }
-  }
-
-  //
-  return zodType
-}
-
-//
-export const setZodNumber = (formField: TFieldDocument) => {
-  const { types, typeOptions = [] } = formField
-  const { type: typeValue } = types
-
-  //
-  const match = typeValue === 'number'
-  if (!match) return null
-
-  //
-  let zodType = z.number()
-  for (const options of typeOptions) {
-    const { name, value, error } = options
-
-    //
-    if (name === 'gt') {
-      zodType.gt(value, { message: error })
-    }
-    if (name === 'gte') {
-      zodType.gte(value, { message: error })
-    }
-    if (name === 'lt') {
-      zodType.lt(value, { message: error })
-    }
-    if (name === 'lte') {
-      zodType.lte(value, { message: error })
-    }
-
-    //
-    if (name === 'int') {
-      zodType.int({ message: error })
-    }
-
-    //
-    if (name === 'positive') {
-      zodType.positive({ message: error })
-    }
-    if (name === 'nonnegative') {
-      zodType.nonnegative({ message: error })
-    }
-    if (name === 'negative') {
-      zodType.negative({ message: error })
-    }
-    if (name === 'nonpositive') {
-      zodType.nonpositive({ message: error })
-    }
-
-    //
-    if (name === 'finite') {
-      zodType.finite({ message: error })
-    }
-    if (name === 'safe') {
-      zodType.safe({ message: error })
-    }
-  }
-
-  //
-  return zodType
-}
-
-//
-export const setZodBigint = (formField: TFieldDocument) => {
-  const { types, typeOptions = [] } = formField
-  const { type: typeValue } = types
-
-  //
-  const match = typeValue === 'bigint'
-  if (!match) return null
-
-  //
-  let zodType = z.bigint()
-  for (const options of typeOptions) {
-    const { name, value, error } = options
-
-    //
-    if (name === 'gt') {
-      zodType.gt(value, { message: error })
-    }
-    if (name === 'gte') {
-      zodType.gte(value, { message: error })
-    }
-    if (name === 'lt') {
-      zodType.lt(value, { message: error })
-    }
-    if (name === 'lte') {
-      zodType.lte(value, { message: error })
-    }
-
-    //
-    if (name === 'positive') {
-      zodType.positive({ message: error })
-    }
-    if (name === 'nonnegative') {
-      zodType.nonnegative({ message: error })
-    }
-    if (name === 'negative') {
-      zodType.negative({ message: error })
-    }
-    if (name === 'nonpositive') {
-      zodType.nonpositive({ message: error })
-    }
-  }
-
-  //
-  return zodType
-}
-
-//
-export const setZodBoolean = (formField: TFieldDocument) => {
-  const { types, typeOptions = [] } = formField
-  const { type: typeValue } = types
-
-  //
-  const match = typeValue === 'boolean'
-  if (!match) return null
-
-  //
-  let zodType = z.boolean()
-  for (const options of typeOptions) {
-    const { name, value, error } = options
-  }
-
-  //
-  return zodType
-}
-
-//
-export const setZodDate = (formField: TFieldDocument) => {
-  const { types, typeOptions = [] } = formField
-  const { type: typeValue } = types
-
-  //
-  const match = typeValue === 'date'
-  if (!match) return null
-
-  //
-  let zodType = z.date()
-  for (const options of typeOptions) {
-    const { name, value, error } = options
-
-    //
-    if (name === 'min') {
-      zodType.min(value, { message: error })
-    }
-    if (name === 'max') {
-      zodType.max(value, { message: error })
-    }
-  }
-
-  //
-  return zodType
-}
-
-//
-export const setZodSymbol = (formField: TFieldDocument) => {
-  const { types, typeOptions = [] } = formField
-  const { type: typeValue } = types
-
-  //
-  const match = typeValue === 'symbol'
-  if (!match) return null
-
-  //
-  let zodType = z.symbol()
-  for (const options of typeOptions) {
-    const { name, value, error } = options
-  }
-
-  //
-  return zodType
-}
-
-// ##########
-export const setZodEnum = (formField: TFieldDocument) => {
-  const { types, typeOptions = [] } = formField
-  const { type: typeValue, value } = types
-
-  //
-  const match = typeValue === 'enum'
-  if (!match) return null
-
-  //
-  let zodType = z.enum(value) ?? null
-  for (const options of typeOptions) {
-    const { name, value, error } = options
-  }
-
-  //
-  return zodType
-}
-
-// ##########
-export const setZodNan = (formField: TFieldDocument) => {
-  const { types, typeOptions = [] } = formField
-  const { type: typeValue } = types
-
-  //
-  const match = typeValue === 'nan'
-  if (!match) return null
-
-  //
-  let zodType = z.nan()
-  for (const options of typeOptions) {
-    const { name, value, error } = options
-  }
-
-  //
-  return zodType
-}
-
-//
-export const setZodUndefined = (formField: TFieldDocument) => {
-  const { types, typeOptions = [] } = formField
-  const { type: typeValue } = types
-
-  //
-  const match = typeValue === 'undefined'
-  if (!match) return null
-
-  //
-  let zodType = z.undefined()
-  for (const options of typeOptions) {
-    const { name, value, error } = options
-  }
-
-  //
-  return zodType
-}
-
-//
-export const setZodNull = (formField: TFieldDocument) => {
-  const { types, typeOptions = [] } = formField
-  const { type: typeValue } = types
-
-  //
-  const match = typeValue === 'null'
-  if (!match) return null
-
-  //
-  let zodType = z.null()
-  for (const options of typeOptions) {
-    const { name, value, error } = options
-  }
-
-  //
-  return zodType
-}
-
-//
-export const setZodVoid = (formField: TFieldDocument) => {
-  const { types, typeOptions = [] } = formField
-  const { type: typeValue } = types
-
-  //
-  const match = typeValue === 'void'
-  if (!match) return null
-
-  //
-  let zodType = z.void()
-  for (const options of typeOptions) {
-    const { name, value, error } = options
-  }
-
-  //
-  return zodType
-}
-
-// ##########
-export const setZodAny = (formField: TFieldDocument) => {
-  const { types, typeOptions = [] } = formField
-  const { type: typeValue } = types
-
-  //
-  const match = typeValue === 'any'
-  if (!match) return null
-
-  //
-  let zodType = z.any()
-  for (const options of typeOptions) {
-    const { name, value, error } = options
-  }
-
-  //
-  return zodType
-}
-
-//
-export const setZodUnknown = (formField: TFieldDocument) => {
-  const { types, typeOptions = [] } = formField
-  const { type: typeValue } = types
-
-  //
-  const match = typeValue === 'unknown'
-  if (!match) return null
-
-  //
-  let zodType = z.unknown()
-  for (const options of typeOptions) {
-    const { name, value, error } = options
-  }
-
-  //
-  return zodType
-}
-
-//
-export const setZodNever = (formField: TFieldDocument) => {
-  const { types, typeOptions = [] } = formField
-  const { type: typeValue } = types
-
-  //
-  const match = typeValue === 'never'
-  if (!match) return null
-
-  //
-  let zodType = z.never()
-  for (const options of typeOptions) {
-    const { name, value, error } = options
-  }
-
-  //
-  return zodType
-}
-
-// ##########
-export const setZodFields = (formField: TFieldDocument) => {
-  const { name } = formField
+export const setZodByTypes = <T extends TPrimaryType | TSecondaryTypes>(
+  formField: T
+) => {
+  const { types } = formField
+  const { type } = types
   let zod
 
-  // primitives
-  zod = setZodString(formField) ?? zod
-  zod = setZodNumber(formField) ?? zod
-  zod = setZodBigint(formField) ?? zod
-  zod = setZodBoolean(formField) ?? zod
-  zod = setZodDate(formField) ?? zod
-  zod = setZodSymbol(formField) ?? zod
+  // primary
+  if (type === 'string') {
+    zod = setZodString(formField) ?? zod
+    zod = setZodSymbol(formField) ?? zod
+  }
+  if (type === 'number') {
+    zod = setZodNumber(formField) ?? zod
+    zod = setZodBigint(formField) ?? zod
+  }
+  if (type === 'boolean') {
+    zod = setZodBoolean(formField) ?? zod
+  }
+  if (type === 'date' || type === 'datetime') {
+    zod = setZodDate(formField) ?? zod
+  }
+  if (type === 'enum') {
+    zod = setZodEnum(formField) ?? zod
+  }
+  if (type === 'object') {
+    zod = setZodObject(formField) ?? zod
+  }
 
   //
-  zod = setZodNan(formField) ?? zod
-  zod = setZodUndefined(formField) ?? zod
-  zod = setZodNull(formField) ?? zod
-  zod = setZodVoid(formField) ?? zod
+  if (type === 'any') {
+    zod = setZodAny(formField) ?? zod
+  }
+  if (type === 'unknown') {
+    zod = setZodUnknown(formField) ?? zod
+  }
+  if (type === 'nan') {
+    zod = setZodNan(formField) ?? zod
+  }
 
   //
-  zod = setZodAny(formField) ?? zod
-  zod = setZodUnknown(formField) ?? zod
+  if (type === 'undefined') {
+    zod = setZodUndefined(formField) ?? zod
+  }
+  if (type === 'null') {
+    zod = setZodNull(formField) ?? zod
+  }
 
   //
-  zod = setZodNever(formField) ?? zod
+  if (type === 'void') {
+    zod = setZodVoid(formField) ?? zod
+  }
+  if (type === 'never') {
+    zod = setZodNever(formField) ?? zod
+  }
+
+  //
+  return zod
+}
+
+//
+export const mapZodSecondaryTypes = <
+  T1 extends TPrimaryType,
+  T2 extends TSecondaryTypes
+>(
+  primaryType: T1,
+  secondaryTypes: T2[] = []
+) => {
+  const sortedSecondaryTypes = sortBy(secondaryTypes, 'order')
+  let zod
+
+  //
+  const zodPrimaryType = setZodByTypes(primaryType)
+  const zodSecondaryTypes = sortedSecondaryTypes.map(type => {
+    return { ...type, zodType: setZodByTypes(type) }
+  })
+
+  //
+  zod = zodPrimaryType
+  for (const type of zodSecondaryTypes) {
+    zod = setByZodMethods(type, zodPrimaryType, type.zodType)
+  }
+
+  //
+  return zod
+}
+
+//
+export const mapZodValues = (formField: TFieldDocument) => {
+  const { name, primaryType, secondaryTypes = [] } = formField
+  let zod = mapZodSecondaryTypes(primaryType, secondaryTypes)
 
   //
   const zodObject = name && zod ? { name, value: zod } : null
   return zodObject
 }
 
-//
-export const setZodObject = (list: TFieldDocument[] = []) => {
+// ##########
+export const setZodDocument = (fields: TFieldDocument[] = []) => {
   let zodObject = {}
 
   //
-  const zodFields = list.map(data => setZodFields(data))
+  const zodFields = fields.map(data => mapZodValues(data))
   for (const obj of zodFields) {
     if (!obj) continue
     zodObject = { ...zodObject, [obj.name]: obj.value }
@@ -447,18 +140,54 @@ export const setZodObject = (list: TFieldDocument[] = []) => {
   return z.object(zodObject)
 }
 
-//
+// ##########
 export const setZodDefaultValues = (formFields: TFieldDocument[]) => {
   let defaultValues: { [key: string]: any } = {}
 
   //
+  const setDefaultValues = (formField: TPrimaryType) => {
+    const { types, typeObject = [] } = formField ?? {}
+    const { type: typeValue, value, defaultValue } = types ?? {}
+
+    //
+    let newValue
+    const getValue = (val?: any) => value ?? defaultValue ?? val
+
+    //
+    if (typeValue === 'string') {
+      newValue = getValue('')
+    }
+    if (typeValue === 'number') {
+      newValue = getValue(0)
+    }
+    if (typeValue === 'boolean') {
+      newValue = getValue(false)
+    }
+    if (typeValue === 'date' || typeValue === 'datetime') {
+      newValue = getValue(new Date())
+    }
+
+    //
+    if (typeValue === 'array') {
+      newValue = getValue([])
+    }
+    if (typeValue === 'object') {
+      const object = setZodDefaultValues(typeObject) ?? {}
+      newValue = getValue(object)
+    }
+
+    //
+    return newValue
+  }
+
+  //
   for (const field of formFields) {
-    const { name, properties } = field
-    const { defaultValue } = properties ?? {}
+    const { name, primaryType } = field
 
     //
     if (!name) continue
-    defaultValues = { ...defaultValues, [name]: defaultValue }
+    const value = setDefaultValues(primaryType)
+    defaultValues = { ...defaultValues, [name]: value }
   }
 
   return defaultValues

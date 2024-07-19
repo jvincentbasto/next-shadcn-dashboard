@@ -16,15 +16,17 @@ export const formFields: TFieldDocument[] = [
       placeholder: 'Enter Name',
       required: true
     },
-    types: {
-      type: 'string',
-      input: 'text'
-    },
-    nameFormats: {
-      name: 'Name',
-      singular: 'Name',
-      plural: 'Names',
-      regex: '^[a-zA-Z0-9_]*$'
+    primaryType: {
+      types: {
+        type: 'string',
+        input: 'text'
+      },
+      nameFormats: {
+        name: 'Name',
+        singular: 'Name',
+        plural: 'Names',
+        regex: '^[a-zA-Z0-9_]*$'
+      }
     }
   },
   {
@@ -36,15 +38,17 @@ export const formFields: TFieldDocument[] = [
       placeholder: 'Enter Email',
       required: true
     },
-    types: {
-      type: 'string',
-      input: 'email'
-    },
-    nameFormats: {
-      name: 'Email',
-      singular: 'Email',
-      plural: 'Emails',
-      regex: '^[a-zA-Z0-9_]*$'
+    primaryType: {
+      types: {
+        type: 'string',
+        input: 'email'
+      },
+      nameFormats: {
+        name: 'Email',
+        singular: 'Email',
+        plural: 'Emails',
+        regex: '^[a-zA-Z0-9_]*$'
+      }
     }
   }
 ]

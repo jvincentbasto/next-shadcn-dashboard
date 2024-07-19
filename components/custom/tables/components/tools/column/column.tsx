@@ -95,7 +95,9 @@ export const getTableColumnsBySchema = (fields: TFieldDocument[]) => {
 
   //
   const columns: ColumnDef<TColumnDef>[] = fields.map(field => {
-    const { id: fieldId, name, slug } = field
+    const { id: fieldId, name, slug, properties } = field ?? {}
+    const { label, sizes } = properties ?? {}
+    const { table = {} } = sizes ?? {}
 
     //
     let id = name ?? slug ?? fieldId ?? ''
@@ -105,15 +107,15 @@ export const getTableColumnsBySchema = (fields: TFieldDocument[]) => {
     let column: ColumnDef<TColumnDef> = {
       accessorKey: id,
       id: id,
-      header: field.label
+      header: label
     }
 
     //
-    if (field?.minSize) {
-      column.minSize = field.minSize
+    if (table.minSize) {
+      column.minSize = table.minSize
     }
-    if (field?.maxSize) {
-      column.maxSize = field.maxSize
+    if (table.maxSize) {
+      column.maxSize = table.maxSize
     }
 
     //

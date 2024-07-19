@@ -204,7 +204,11 @@ export const getSchemaFieldValidations = (
   formFields: TFieldDocument[]
 ): TRouteFields[] => {
   const fields = formFields.map(d => {
-    return { name: d.name, type: d.type }
+    const { primaryType } = d ?? {}
+    const { types } = primaryType ?? {}
+
+    //
+    return { name: d.name, type: types.type }
   })
 
   return fields

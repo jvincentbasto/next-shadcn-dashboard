@@ -43,9 +43,10 @@ export const DynamicFieldString = ({
   [key: string]: any
   properties: TCustomField
 }) => {
-  const { field } = properties
-  const { types } = field
-  const { type, input } = types
+  const { field } = properties ?? {}
+  const { primaryType } = field ?? {}
+  const { types } = primaryType ?? {}
+  const { type, input } = types ?? {}
 
   //
   let component = null
@@ -77,9 +78,10 @@ export const DynamicFieldNumber = ({
   [key: string]: any
   properties: TCustomField
 }) => {
-  const { field } = properties
-  const { types } = field
-  const { type, input } = types
+  const { field } = properties ?? {}
+  const { primaryType } = field ?? {}
+  const { types } = primaryType ?? {}
+  const { type, input } = types ?? {}
 
   //
   let component = null
@@ -105,9 +107,10 @@ export const DynamicFieldBoolean = ({
   [key: string]: any
   properties: TCustomField
 }) => {
-  const { field } = properties
-  const { types } = field
-  const { type, input } = types
+  const { field } = properties ?? {}
+  const { primaryType } = field ?? {}
+  const { types } = primaryType ?? {}
+  const { type, input } = types ?? {}
 
   //
   let component = null
@@ -137,9 +140,10 @@ export const DynamicFieldArray = <TForm extends FieldValues>({
   options: TCustomFieldArray
   form: TForm
 }) => {
-  const { field } = properties
-  const { types } = field
-  const { type, input } = types
+  const { field } = properties ?? {}
+  const { primaryType } = field ?? {}
+  const { types } = primaryType ?? {}
+  const { type, input } = types ?? {}
 
   //
   let component = null
@@ -184,9 +188,10 @@ export const DynamicFieldDate = ({
   properties: TCustomField
   options: TCustomFieldArray
 }) => {
-  const { field } = properties
-  const { types } = field
-  const { type, input } = types
+  const { field } = properties ?? {}
+  const { primaryType } = field ?? {}
+  const { types } = primaryType ?? {}
+  const { type, input } = types ?? {}
 
   //
   let component = null
@@ -212,9 +217,10 @@ export const DynamicFieldFile = ({
   [key: string]: any
   properties: TCustomField
 }) => {
-  const { field } = properties
-  const { types } = field
-  const { type, input } = types
+  const { field } = properties ?? {}
+  const { primaryType } = field ?? {}
+  const { types } = primaryType ?? {}
+  const { type, input } = types ?? {}
 
   //
   let component = null
@@ -244,9 +250,10 @@ export const DynamicCustomField = <TForm extends FieldValues>({
   options: TCustomFieldArray
   form: TForm
 }) => {
-  const { field } = properties
-  const { types } = field
-  const { type } = types
+  const { field } = properties ?? {}
+  const { primaryType } = field ?? {}
+  const { types } = primaryType ?? {}
+  const { type } = types ?? {}
 
   //
   let component = null
@@ -272,7 +279,7 @@ export const DynamicCustomField = <TForm extends FieldValues>({
   }
 
   //
-  if (type === 'datetime') {
+  if (type === 'date' || type === 'datetime') {
     component = DynamicFieldDate({ properties, options })
   }
 

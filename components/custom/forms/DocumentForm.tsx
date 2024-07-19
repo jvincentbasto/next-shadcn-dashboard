@@ -5,17 +5,22 @@ import { RootState } from '@/states/redux/store'
 import CustomForm from './CustomForm'
 import {
   createDynamicDocument,
+  TDocumentData,
   updateDynamicDocument
 } from '@/states/redux/store/slices/documentSlice'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import { TSchemaDocumentParsed } from '@/db/mongodb/utilities'
-import { setZodDefaultValues, setZodObject } from '@/validations/zod/utilities'
+import {
+  setZodDefaultValues,
+  setZodDocument
+} from '@/validations/zod/utilities'
 import { getSchemaFieldValidations } from '@/db/mongodb/utilities/documents'
 
 //
 type TActions = {
   [key: string]: any
   setDialog: ActionCreatorWithPayload<boolean>
+  setForm: ActionCreatorWithPayload<TDocumentData | null>
 }
 
 //
@@ -27,7 +32,7 @@ type TProps = {
 
 //
 export const DocumentForm = ({ schema, actions }: TProps) => {
-  const { setDialog } = actions
+  const { setDialog, setForm } = actions
   const { schemaName, formName, schemaDefinition, formFields, nameFormats } =
     schema
   const { form: formFormat } = nameFormats ?? {}
@@ -39,7 +44,7 @@ export const DocumentForm = ({ schema, actions }: TProps) => {
 
   //
   if (!formFields) return null
-  const zodSchema = setZodObject(formFields)
+  const zodSchema = setZodDocument(formFields)
   let defaultValues = setZodDefaultValues(formFields)
 
   //
@@ -48,7 +53,8 @@ export const DocumentForm = ({ schema, actions }: TProps) => {
 
   //
   const formActions = {
-    setDialog
+    setDialog,
+    setForm
   }
   const AsyncActions = {
     setDialog,

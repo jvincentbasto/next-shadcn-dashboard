@@ -20,11 +20,12 @@ export const DynamicCheckBox = <TForm extends FieldValues>({
   options: TCustomFieldArray
   form: TForm
 }) => {
-  const { field } = properties
+  const { field } = properties ?? {}
 
   //
-  const { name, types, properties: fieldProperties } = field
-  const { type, input } = types
+  const { name, primaryType, properties: fieldProperties } = field ?? {}
+  const { types } = primaryType ?? {}
+  const { type, input } = types ?? {}
   const { label, description } = fieldProperties ?? {}
 
   //

@@ -67,12 +67,19 @@ const typeInputs = [
   'hidden'
 ] as const
 const schemaTypes = ['system', 'site'] as const
+const typeMethods = ['or', 'and', 'pipe'] as const
 
 //
 export type TTypeValues = (typeof typeValues)[number] | undefined
 export type TTypeInputs = (typeof typeInputs)[number] | undefined
+export type TTypeMethods = (typeof typeMethods)[number] | undefined
 
 //
+export type TFieldSizes = {
+  [key: string]: any
+  minSize?: number
+  maxSize?: number
+}
 export type TFieldProperties = {
   [key: string]: any
   label?: string
@@ -84,21 +91,63 @@ export type TFieldProperties = {
   //
   value?: any
   defaultValue?: any
+  //
+  sizes?: {
+    [key: string]: any
+    form?: TFieldSizes
+    table?: TFieldSizes
+  }
 }
 
 //
+export type TFieldTypeDefaultOptions = {
+  [key: string]: any
+  optional?: boolean
+  readonly?: boolean
+  nullable?: boolean
+  nullish?: boolean
+  enableDefaultValue?: boolean
+}
 export type TFieldTypes = {
   [key: string]: any
   type: TTypeValues
   input: TTypeInputs
+  //
   value?: any
+  defaultValue?: any
+  //
   error?: string
+  options?: TFieldTypeDefaultOptions
 }
 export type TFieldTypeOptions = {
   [key: string]: any
   name: string
   value?: any
   error?: string
+}
+
+//
+export type TArrayType = {
+  [key: string]: any
+  types: TFieldTypes
+  typeOptions?: TFieldTypeOptions[]
+}
+export type TPrimaryType = {
+  [key: string]: any
+  types: TFieldTypes
+  typeOptions?: TFieldTypeOptions[]
+  typeObject?: TFieldDocument[]
+  typeArray?: TArrayType
+}
+export type TSecondaryTypes = {
+  [key: string]: any
+  order: number
+  typeMethod?: TTypeMethods
+  //
+  types: TFieldTypes
+  typeOptions?: TFieldTypeOptions[]
+  typeObject?: TFieldDocument[]
+  typeArray?: TArrayType
 }
 
 //
@@ -128,16 +177,13 @@ export type TFieldDocument = {
   name: string
   slug?: string
   //
-  types: TFieldTypes
-  typeOptions?: TFieldTypeOptions[]
+  primaryType: TPrimaryType
+  secondaryTypes?: TSecondaryTypes[]
   properties?: TFieldProperties
   //
   nameFormats?: TNameFormats
   styles?: TFieldStyles
   classNames?: TFieldClassNames
-  //
-  component?: string
-  children?: TFieldDocument[]
 }
 
 //

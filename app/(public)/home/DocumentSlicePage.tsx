@@ -13,6 +13,7 @@ import {
 } from '@/states/redux/store/slices/documentSlice'
 import { useEffect } from 'react'
 import injectSlice from '@/states/redux/store/injectSlice'
+import { TSchemaDocumentParsed } from '@/db/mongodb/utilities'
 
 const nextDynamicOptions = { ssr: false }
 const DocumentDataTable = dynamic(
@@ -25,7 +26,7 @@ export default function DocumentSlicePage({
   schema,
   data = []
 }: Readonly<{
-  schema: any
+  schema: TSchemaDocumentParsed
   data: any[]
 }>) {
   const dispatch = useDispatch()
@@ -55,6 +56,9 @@ export default function DocumentSlicePage({
   }, [JSON.stringify(data)])
 
   //
+  const deleteDocument = deleteDynamicDocument(formName, schemaName)
+
+  //
   const addCb = () => {
     dispatch(setDialog(true))
     dispatch(setForm(null))
@@ -64,7 +68,6 @@ export default function DocumentSlicePage({
     dispatch(setForm(item))
   }
   const deleteCb = (id: string) => {
-    const deleteDocument = deleteDynamicDocument(formName, schemaName)
     appDispatch(deleteDocument(id))
   }
   const tableActions = {
@@ -74,7 +77,8 @@ export default function DocumentSlicePage({
 
   //
   const formActions = {
-    setDialog
+    setDialog,
+    setForm
   }
 
   //

@@ -16,15 +16,17 @@ export const formFields: TFieldDocument[] = [
       placeholder: 'Enter schema type',
       required: true
     },
-    types: {
-      type: 'string',
-      input: 'text'
-    },
-    nameFormats: {
-      name: 'Schema Type',
-      singular: 'Schema Type',
-      plural: 'Schema Types',
-      regex: '^[a-zA-Z0-9_]*$'
+    primaryType: {
+      types: {
+        type: 'string',
+        input: 'text'
+      },
+      nameFormats: {
+        name: 'Schema Type',
+        singular: 'Schema Type',
+        plural: 'Schema Types',
+        regex: '^[a-zA-Z0-9_]*$'
+      }
     }
   },
   {
@@ -36,15 +38,17 @@ export const formFields: TFieldDocument[] = [
       placeholder: 'Enter schema name',
       required: true
     },
-    types: {
-      type: 'string',
-      input: 'text'
-    },
-    nameFormats: {
-      name: 'Schema Name',
-      singular: 'Schema Name',
-      plural: 'Schema Names',
-      regex: '^[a-zA-Z0-9_]*$'
+    primaryType: {
+      types: {
+        type: 'string',
+        input: 'text'
+      },
+      nameFormats: {
+        name: 'Schema Name',
+        singular: 'Schema Name',
+        plural: 'Schema Names',
+        regex: '^[a-zA-Z0-9_]*$'
+      }
     }
   },
   {
@@ -56,15 +60,17 @@ export const formFields: TFieldDocument[] = [
       placeholder: 'Enter schema definition',
       required: true
     },
-    types: {
-      type: 'string',
-      input: 'text'
-    },
-    nameFormats: {
-      name: 'Schema Definition',
-      singular: 'Schema Definition',
-      plural: 'Schema Definitions',
-      regex: '^[a-zA-Z0-9_]*$'
+    primaryType: {
+      types: {
+        type: 'string',
+        input: 'text'
+      },
+      nameFormats: {
+        name: 'Schema Definition',
+        singular: 'Schema Definition',
+        plural: 'Schema Definitions',
+        regex: '^[a-zA-Z0-9_]*$'
+      }
     }
   },
   {
@@ -76,15 +82,17 @@ export const formFields: TFieldDocument[] = [
       placeholder: 'Enter form name',
       required: true
     },
-    types: {
-      type: 'string',
-      input: 'text'
-    },
-    nameFormats: {
-      name: 'Form Name',
-      singular: 'Form Name',
-      plural: 'Form Names',
-      regex: '^[a-zA-Z0-9_]*$'
+    primaryType: {
+      types: {
+        type: 'string',
+        input: 'text'
+      },
+      nameFormats: {
+        name: 'Form Name',
+        singular: 'Form Name',
+        plural: 'Form Names',
+        regex: '^[a-zA-Z0-9_]*$'
+      }
     }
   },
   {
@@ -96,15 +104,17 @@ export const formFields: TFieldDocument[] = [
       placeholder: 'Enter form fields',
       required: true
     },
-    types: {
-      type: 'string',
-      input: 'text'
-    },
-    nameFormats: {
-      name: 'Form Fields',
-      singular: 'Form Fields',
-      plural: 'Form Fields',
-      regex: '^[a-zA-Z0-9_]*$'
+    primaryType: {
+      types: {
+        type: 'string',
+        input: 'text'
+      },
+      nameFormats: {
+        name: 'Form Fields',
+        singular: 'Form Fields',
+        plural: 'Form Fields',
+        regex: '^[a-zA-Z0-9_]*$'
+      }
     }
   }
 ]

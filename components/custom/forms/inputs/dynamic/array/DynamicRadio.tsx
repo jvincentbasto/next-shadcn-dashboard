@@ -15,11 +15,12 @@ export const DynamicRadio = ({
   properties: TCustomField
   options: TCustomFieldArray
 }) => {
-  const { field, formField } = properties
+  const { field, formField } = properties ?? {}
 
   //
-  const { name, types, properties: fieldProperties } = field
-  const { type, input } = types
+  const { name, primaryType, properties: fieldProperties } = field ?? {}
+  const { types } = primaryType ?? {}
+  const { type, input } = types ?? {}
   const { label } = fieldProperties ?? {}
 
   //

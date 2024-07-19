@@ -17,6 +17,7 @@ import {
   TSchemaDefinition
 } from '@/db/mongodb/utilities'
 import { TRouteFields } from '@/db/mongodb/utilities/documents'
+import { TDocumentData } from '@/states/redux/store/slices/documentSlice'
 
 //
 type TFormData<T> = {
@@ -30,6 +31,7 @@ type TFormData<T> = {
 type TFormActions = {
   [key: string]: any
   setDialog: ActionCreatorWithPayload<boolean>
+  setForm: ActionCreatorWithPayload<TDocumentData | null>
 }
 
 //
@@ -90,7 +92,7 @@ export const CustomForm = <
   const { formName, formSchema, formFields, defaultValues } = formData
 
   //
-  const { setDialog } = formActions
+  const { setDialog, setForm } = formActions
   const { createCb, updateCb } = asyncActions
   const { schemaName, schemaDefinition, schemaFields } = schema ?? {}
 
@@ -127,8 +129,6 @@ export const CustomForm = <
         >
         setValue(field, fieldValue)
       }
-    } else {
-      reset()
     }
   }, [JSON.stringify(data)])
 
@@ -171,6 +171,7 @@ export const CustomForm = <
       //
       if (data) {
         if (updateCb) {
+          payload = { ...payload, data: { ...payload.data, id: data.id } }
           appDispatch(updateCb(payload))
         }
       } else {
@@ -231,6 +232,7 @@ export const CustomForm = <
   //
   const handleDialogOpen = (value: boolean) => {
     dispatch(setDialog(value))
+    dispatch(setForm(null))
     reset()
   }
 
